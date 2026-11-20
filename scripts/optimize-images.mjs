@@ -3,7 +3,8 @@
 // Lee   <juego>/assets-src/**/*.png|jpg  (originales, NO se publican)
 // Crea  <juego>/src/assets/**/*.webp     (lo que usa el código)
 // Ancho máximo por defecto: 1024px. Para cambiarlo en una imagen, agregala a
-// <juego>/assets-src/tamanos.json, por ejemplo: { "corazon-firma.png": 140 }
+// <juego>/assets-src/tamanos.json, por ejemplo: { "corazon-firma.png": 140, "texturas/": 256 }
+// (una clave que termina en "/" aplica a toda la carpeta)
 import sharp from 'sharp'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -26,7 +27,9 @@ for (const file of walk(src)) {
   const rel = path.relative(src, file)
   const dest = path.join(out, rel.replace(/\.(png|jpe?g)$/i, '.webp'))
   fs.mkdirSync(path.dirname(dest), { recursive: true })
-  const max = sizes[rel] ?? DEFAULT_MAX
+  // tamaño por archivo ("carpeta/archivo.png") o por carpeta ("carpeta/")
+  const carpeta = Object.keys(sizes).filter((k) => k.endsWith('/') && rel.startsWith(k)).sort((a, b) => b.length - a.length)[0]
+  const max = sizes[rel] ?? (carpeta ? sizes[carpeta] : DEFAULT_MAX)
   const meta = await sharp(file).metadata()
   await sharp(file)
     .resize({ width: Math.min(meta.width, max), withoutEnlargement: true })

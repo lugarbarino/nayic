@@ -1,11 +1,10 @@
+# Tetris Texturas
 
-  # Tetris Texturas
+El Tetris de siempre con texturas según el tema elegido, parte de [Nayic](https://nayic.com.ar/tetris/).
 
-  This is a code bundle for Tetris Texturas. The original project is available at https://www.figma.com/design/vLsFJ4exb5jFY6pNXveETs/Tetris-Texturas.
+```bash
+npm install
+npm run dev
+```
 
-  ## Running the code
-
-  Run `npm i` to install the dependencies.
-
-  Run `npm run dev` to start the development server.
-  
+Más detalles en `CLAUDE.md`.

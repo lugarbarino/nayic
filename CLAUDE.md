@@ -7,8 +7,8 @@ Leé esto primero. Resume todo lo decidido para no tener que re-explicar.
 - Ya no quiere depender de Figma: todo lo que se publique tiene que ser código editable en este repo.
 - Repo privado: https://github.com/lugarbarino/nayic (rama `main`). Local: `~/Documents/GitHub/nayic`.
 - No hay `gh` ni Homebrew en su Mac. El permiso de `git push` a veces lo bloquea el sistema: en ese caso dale el comando para pegar en la app Terminal.
-- **Claude hace el commit y el push** (Lucía lo pidió): cuando un trabajo está terminado y probado (build completo OK), commitear y pushear a `main` sin esperar. Nunca subir trabajo a medias (rompe el build de Vercel).
-- Lucía a veces también sube con **GitHub Desktop**, incluso con trabajo a medias. Antes de empezar, mirá `git log`/`git status`.
+- **Lucía sube los cambios ella misma con GitHub Desktop** (Commit to main + Push origin). Claude NO commitea ni pushea: cuando un trabajo está terminado y probado (build completo OK), avisale "listo para subir" y pasale el texto del commit listo para pegar: **Summary** (una línea corta) y **Description** (2-4 viñetas simples, en español).
+- A veces sube con trabajo a medias: antes de empezar, mirá `git log`/`git status`, y avisale si algo quedó incompleto (rompe el build de Vercel).
 
 ## Qué es
 Sitio de mini juegos en **nayic.com.ar**: una landing y 6 juegos, todos en este repo. Todo se publica junto en un único proyecto de Vercel (plan Hobby, cuenta personal).
@@ -63,8 +63,11 @@ Sitio de mini juegos en **nayic.com.ar**: una landing y 6 juegos, todos en este 
 1b. ~~Traer CAOS al repo~~ (hecho: `games/caos/`, probado en `/caos/`). Detalle pendiente: en pantallas bajas (≈600px de alto) los 3 botones de abajo tapan la bajada "para que cada dibujo sea una aventura distinta" (ya pasaba en la versión de Figma).
 1c. Limpieza de los juegos: borrar lo que Figma agrega y no se usa (~75% de los archivos, los 48 componentes de `ui/`, la mayoría de `imports/`, casi todas las dependencias), renombrar imágenes con nombres legibles y pasarlas a WebP. Después: un solo proyecto para landing + juegos, carpeta `shared/` común y plantilla para juegos nuevos.
    - **Tateti: hecho** (ver `games/tateti/CLAUDE.md`). Es el modelo a seguir: `assets-src/` con originales PNG renombrados → `npm run optimize -- games/<juego>` (script en `scripts/optimize-images.mjs`, usa `sharp` instalado en la raíz) → `src/assets/*.webp`; código en `src/` (`App.tsx`, `components/`, `svg/`, `styles.css`), sin alias `@`, sin plugin `figma-assets`, `package.json` solo con lo que se usa. Verificación: "huella" de la página (textos, imágenes y posiciones) antes y después en 1440px y 390px, más jugar una partida.
-   - Siguen: Tetris, Gato, La Viborita, Memoria, CAOS.
-   - **Bug a revisar en Gato y Tetris**: igual que Tateti, les falta `html, body, #root { height: 100% }`; en Tateti eso hacía que la pantalla de juego quedara cortada arriba (en Figma se veía bien porque su runtime lo agrega). Memoria, Viborita y CAOS ya lo tienen.
+   - **Tetris: hecho** (ver `games/tetris/CLAUDE.md`). 20 MB → 1,8 MB.
+   - Siguen: Gato, La Viborita, Memoria, CAOS.
+   - **Herramientas** (en `scripts/`): `analizar-juego.mjs` (qué archivos, paquetes e imágenes se usan; los imports solo de tipos no aparecen, revisarlos a mano) y `reorganizar-juego.mjs` (mueve código e imágenes según un mapa viejo→nuevo y reescribe todos los imports). Para nombrar imágenes: armar una planilla numerada con `sharp` y mirarla.
+   - Los exports de Figma traen cosas olvidadas: carteles de depuración, imports a archivos que no existen. Revisar al limpiar.
+   - **Bug a revisar en Gato**: igual que Tateti, le falta `html, body, #root { height: 100% }`; en Tateti eso hacía que la pantalla de juego quedara cortada arriba. Tetris no lo tenía (probado).
 2b. Recuperar las imágenes faltantes (Gato y Memoria).
 3. Conectar el dominio nayic.com.ar a Vercel.
 4. Un `CLAUDE.md` por juego en `games/<juego>/` con lo propio de cada uno (qué hace, assets, pendientes).
