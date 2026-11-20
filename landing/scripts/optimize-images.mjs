@@ -17,9 +17,6 @@ for (const file of readdirSync(src)) {
     // Fondo grande: dos tamaños para srcset
     await img.clone().resize({ width: 1200 }).webp({ quality: 72 }).toFile(join(out, 'hero-1200.webp'))
     await img.clone().resize({ width: 2000 }).webp({ quality: 72 }).toFile(join(out, 'hero-2000.webp'))
-  } else if (name === 'corazon') {
-    // Corazón peludo del pie ("Hecho con ❤"): se ve a ~24px, guardamos 96px
-    await img.clone().resize({ width: 96 }).webp({ quality: 85 }).toFile(join(out, 'corazon.webp'))
   } else if (name === 'og') {
     // Imagen para compartir en redes (la original de Figma), en JPG liviano
     await img.clone().resize({ width: 1200 }).flatten({ background: '#1d171f' }).jpeg({ quality: 84, mozjpeg: true }).toFile(join(out, 'og.jpg'))
@@ -29,3 +26,8 @@ for (const file of readdirSync(src)) {
   }
   console.log('ok', file)
 }
+
+// Corazón peludo del pie ("Hecho con ❤"): es el MISMO que usan los juegos.
+// No se copia: se toma el original de Tateti y se genera una versión chiquita para la landing.
+await sharp('../games/tateti/assets-src/corazon-firma.png').resize({ width: 96 }).webp({ quality: 85 }).toFile(join(out, 'corazon.webp'))
+console.log('ok corazón (desde games/tateti/assets-src/corazon-firma.png)')
