@@ -1,0 +1,58 @@
+# Nayic — contexto del proyecto
+
+Leé esto primero. Resume todo lo decidido para no tener que re-explicar.
+
+## Quién y cómo trabajar
+- La dueña es diseñadora de producto (Lucía), de Córdoba, Argentina. **No es desarrolladora**: explicá en español, simple, con pasos numerados y sin jerga. Si algo requiere que ella haga algo (GitHub, Vercel, DNS), dale los pasos exactos.
+- Ya no quiere depender de Figma: todo lo que se publique tiene que ser código editable en este repo.
+- Repo privado: https://github.com/lugarbarino/nayic (rama `main`). Local: `~/Documents/GitHub/nayic`.
+- No hay `gh` ni Homebrew en su Mac. El permiso de `git push` a veces lo bloquea el sistema: en ese caso dale el comando para pegar en la app Terminal.
+
+## Qué es
+Sitio de mini juegos en **nayic.com.ar**: una landing y 5 juegos. Todo se publica junto en un único proyecto de Vercel (plan Hobby, cuenta personal).
+
+```
+/            -> landing/            (Vite, JS vanilla)
+/viborita/   -> games/viborita      La Viborita
+/tetris/     -> games/tetris        Tetris Texturas
+/gato/       -> games/gato          Gato (corre y flota, evita rocas)
+/memoria/    -> games/memoria       Juego de memoria
+/tateti/     -> games/tateti        Tateti
+```
+
+- Los juegos vienen de **Figma Make** (React + Vite + Tailwind). Son proyectos independientes con su propio `package.json`.
+- La landing la reconstruí desde el sitio de Figma Sites publicado (que no permite exportar código).
+- Hoy los links públicos van a `*.figma.site` (laviborita, ttris, gatovolador, juegodememoria, tateti). La landing nueva ya apunta a `/<juego>/`; los juegos salen de Figma cuando el dominio pase a Vercel.
+
+## Build y deploy
+- `node scripts/build.mjs` compila la landing y cada juego (`vite build --base=/<juego>/ --outDir dist`) y lo junta todo en `dist/`.
+- `vercel.json` (raíz): `framework: null`, `installCommand: "echo skip"`, `buildCommand: "node scripts/build.mjs"`, `outputDirectory: "dist"`.
+- En Vercel el proyecto debe importarse con **Root Directory = `./`** y **Application Preset = Other** (si no, detecta "Services" o solo la landing).
+- Probar local: `node scripts/build.mjs` y servir `dist/` (por ejemplo `npx serve dist`).
+- Dominio: pendiente de conectar. Agregar `nayic.com.ar` en Vercel → Settings → Domains y cargar los registros DNS donde esté el DNS del dominio (NIC Argentina u otro; hoy apunta a Figma Sites). Figma sigue online hasta cambiar el DNS.
+
+## Landing (`landing/`)
+- Edita los juegos en `landing/src/games.js` (lista, textos, imágenes, rutas). La tarjeta de relleno "Nombre del juego" es `nextGame` (queda como "Próximamente").
+- Estilos en `landing/src/style.css`. Imágenes en `landing/public/img`, fuentes en `landing/public/fonts`.
+- **Imágenes**: los originales PNG están en `landing/assets-src/` (NO se publican). `npm run optimize` (en `landing/`, usa `sharp`) genera los WebP livianos en `public/img` (tarjetas a 700px, hero en 1200/2000px con `srcset`, y `og.jpg` para redes). Para cambiar una imagen: reemplazá el original en `assets-src/` y corré `npm run optimize`. Peso de la landing: ~0,8 MB (antes 17 MB).
+- **Responsive** (hecho): tarjetas de ancho fluido y alto automático, grilla `auto-fit`, barra lateral fija solo en ≥1101px y apilada arriba en tablet/móvil, tipografías con `clamp()`, sin scroll horizontal. Probado a 390, 820 y 1440px.
+- **Caché** (en `vercel.json` → `headers`): `/assets/*` y `/<juego>/assets/*` con `immutable` 1 año (Vite les pone hash en el nombre); `/img/*` y `/fonts/*` 30 días (sin hash en el nombre).
+- Diseño original (desktop 1440px): barra lateral fija de 480px con logo, bajada "Juegos con acento propio" y "Desde Córdoba, Argentina"; columna principal de 960px con hero (imagen 960x609 + tarjeta de La Viborita), sección "Seguí jugando / Mini juegos" con grilla de 2 columnas de tarjetas de 370x460, y footer "Un segundo para **vos**" + link de feedback (https://tally.so/r/0Qer7Z) + "Hecho con ❤️".
+- Colores: fondo `#2b2031`, secciones `#1d171f`, lila `#d7c1e8`, texto tarjeta `#3b3b3b`, subtexto `#756f6c`, link `#332115`.
+- Tipografías: Capriola (títulos), Plus Jakarta Sans (texto), Giant Boss (la palabra "vos"; copiada del sitio original, confirmar que la licencia permita usarla).
+
+## Juegos y Figma Make (cosas raras)
+- Los imports `figma:asset/<hash>.png` se resuelven con el plugin `games/_shared/figma-assets.js` (ya agregado a `vite.config.ts` de gato, memoria, tateti y tetris; viborita los tiene como alias).
+- **Imágenes faltantes**: el export de Figma Make no trajo 4 imágenes de Gato (pantalla de precarga) y 38 de Juego de memoria (pantalla de carga con hexágonos). El plugin las reemplaza por un píxel transparente y avisa en el build. Para recuperarlas hay que re-exportar esos juegos desde Figma Make (*Download code*) o conseguir las imágenes. Hasta entonces la pantalla de carga de memoria se ve incompleta.
+- Memoria y Viborita traían `outDir: 'build'`; el script fuerza `--outDir dist`.
+- No subir `node_modules`, `dist` ni `build` (están en `.gitignore`).
+- Los juegos pesan mucho por las imágenes (viborita ~228 MB, memoria ~181 MB). Ningún archivo pasa los 100 MB de GitHub.
+
+## Pendientes
+1. Optimizar el peso de los juegos (dist: memoria ~68 MB, viborita ~51 MB, gato ~46 MB, tetris ~20 MB): convertir sus PNG a WebP. La landing ya está optimizada.
+2. Revisar el responsive/uso en móvil de cada juego (solo se revisó la landing).
+2b. Recuperar las imágenes faltantes (Gato y Memoria).
+3. Conectar el dominio nayic.com.ar a Vercel.
+4. Un `CLAUDE.md` por juego en `games/<juego>/` con lo propio de cada uno (qué hace, assets, pendientes).
+5. Lista de tareas: decidir entre GitHub Issues (requiere instalar `gh` y loguearse) o un `TASKS.md` en el repo.
+6. Revisar que cada juego funcione bien bajo su ruta (`/viborita/`, etc.) y en móvil.
