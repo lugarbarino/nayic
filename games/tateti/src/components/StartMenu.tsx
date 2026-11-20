@@ -1,61 +1,15 @@
 import { useState } from 'react';
-import svgPaths from "@/imports/svg-gvcvva861r";
-import imgGato21 from "figma:asset/43ed8e526af030d6be6bb5981f4ffd72755f09d6.png";
-import imgSnake1 from "figma:asset/bf54a6b9017dd3f234a135bdd258525c98448591.png";
-
-// Par 1 - Personajes reales
-import imgPlayer1Par1 from "figma:asset/1a905b452b8616d4913a87b83d43e3481c6a3fe4.png";
-import imgPlayer2Par1 from "figma:asset/1a8f87ec1a50fa8149e7194149401f3455beb687.png";
-
-// Par 2 - Personajes reales
-import imgPlayer1Par2 from "figma:asset/3a6ace823d327db09dcd656f77c09193b5ef61b9.png";
-import imgPlayer2Par2 from "figma:asset/a3c754e3e4eed6cd5561053444a996381b35df85.png";
-
-// Par 3 - Personajes reales
-import imgPlayer1Par3 from "figma:asset/8b179d68c37a2298029b53ee038f299cd8efb1c0.png";
-import imgPlayer2Par3 from "figma:asset/b75a433932d3c96609007e61fadff773aa749af7.png";
-
-// Par 4 - Personajes reales
-import imgPlayer1Par4 from "figma:asset/34321f44fed05a3d3e6a4756621cef64c98de28b.png";
-import imgPlayer2Par4 from "figma:asset/e67dd1106bb9f0b667c83599a6c2609388803467.png";
-
-// Par 5 - Personajes reales
-import imgPlayer1Par5 from "figma:asset/d1a529283553aff2c263e6ee185d1ee9c74c552a.png";
-import imgPlayer2Par5 from "figma:asset/96a8aa59fb14ee6592e44c3ec55060cc774e3e57.png";
-
-// Par 6 - Personajes reales
-import imgPlayer1Par6 from "figma:asset/9de0a1200a24069421bb85979c9b4c6087439a3d.png";
-import imgPlayer2Par6 from "figma:asset/bd2e6f8c83f6c11819140282890f56be385d3872.png";
-
-// Par 7 - Personajes reales
-import imgPlayer1Par7 from "figma:asset/a04fa8cbd2c0fc35ac30f315f7611fb4b2ede340.png";
-import imgPlayer2Par7 from "figma:asset/4327c21be0afe978f9b5fc7971b8461c2645a608.png";
+import svgPaths from '../svg/logo-nayic';
+import logoTateti from '../assets/logo-tateti.webp';
+import corazonFirma from '../assets/corazon-firma.webp';
+import { FICHAS_JUGADOR_1, FICHAS_JUGADOR_2 } from '../fichas';
 
 interface StartMenuProps {
   onStartGame: (playerCount: 1 | 2, player1Character: number, player2Character: number) => void;
 }
 
-// 7 personajes para el Jugador 1
-const PLAYER1_CHARACTERS = [
-  imgPlayer1Par1,
-  imgPlayer1Par2,
-  imgPlayer1Par3,
-  imgPlayer1Par4,
-  imgPlayer1Par5,
-  imgPlayer1Par6,
-  imgPlayer1Par7,
-];
-
-// 7 personajes para el Jugador 2
-const PLAYER2_CHARACTERS = [
-  imgPlayer2Par1,
-  imgPlayer2Par2,
-  imgPlayer2Par3,
-  imgPlayer2Par4,
-  imgPlayer2Par5,
-  imgPlayer2Par6,
-  imgPlayer2Par7,
-];
+const PLAYER1_CHARACTERS = FICHAS_JUGADOR_1;
+const PLAYER2_CHARACTERS = FICHAS_JUGADOR_2;
 
 export function StartMenu({ onStartGame }: StartMenuProps) {
   const [playerCount, setPlayerCount] = useState<1 | 2>(1);
@@ -90,7 +44,7 @@ export function StartMenu({ onStartGame }: StartMenuProps) {
           <img 
             alt="Tateti Logo" 
             className="w-full h-full object-contain" 
-            src={imgGato21} 
+            src={logoTateti} 
           />
         </div>
 
@@ -211,7 +165,7 @@ export function StartMenu({ onStartGame }: StartMenuProps) {
               <p className="font-['SF_Pro_Display',sans-serif] text-[#c9d0f0] text-[17.255px] text-center tracking-[-0.3451px] leading-[1.2] group-hover:text-white transition-colors">
                 Hecho con
               </p>
-              <img alt="love" className="size-[34.51px] object-cover" src={imgSnake1} />
+              <img alt="love" className="size-[34.51px] object-cover" src={corazonFirma} />
               <p className="font-['SF_Pro_Display',sans-serif] text-[#c9d0f0] text-[17.255px] text-center tracking-[-0.3451px] leading-[1.2] group-hover:text-white transition-colors">
                 por
               </p>
@@ -239,7 +193,7 @@ export function StartMenu({ onStartGame }: StartMenuProps) {
           <img 
             alt="Tateti Logo" 
             className="w-full h-full object-contain" 
-            src={imgGato21} 
+            src={logoTateti} 
           />
         </div>
 
@@ -374,7 +328,7 @@ export function StartMenu({ onStartGame }: StartMenuProps) {
             <div className="flex gap-[2.157px] items-center">
               <p className="font-['SF_Pro_Display',sans-serif] group-hover:text-white transition-colors tracking-[-0.3451px] leading-[1.2]">Hecho con</p>
               <img 
-                src={imgSnake1} 
+                src={corazonFirma} 
                 alt="love" 
                 className="w-[34.51px] h-[34.51px]"
               />

@@ -1,0 +1,27 @@
+@import 'tailwindcss';
+
+/* Base del juego (lo único que se usaba del tema de Figma Make) */
+@layer base {
+  /* Altura completa: sin esto el tablero se calcula sobre 0px y queda fuera de pantalla */
+  html, body, #root { height: 100%; margin: 0; }
+
+  html {
+    overflow-x: hidden;
+    background: linear-gradient(105.242deg, rgb(12, 14, 23) 0%, rgb(65, 76, 125) 115.08%);
+  }
+
+  body {
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+    color: oklch(0.145 0 0);
+  }
+
+  * { border-color: rgba(0, 0, 0, 0.1); }
+
+  button {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+}

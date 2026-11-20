@@ -1,11 +1,10 @@
+# Tateti
 
-  # Tateti
+Tres en línea con 3 fichas por jugador, parte de [Nayic](https://nayic.com.ar/tateti/).
 
-  This is a code bundle for Tateti. The original project is available at https://www.figma.com/design/RfuRS6Fl4ikt11pdvLLMdW/Tateti.
+```bash
+npm install
+npm run dev
+```
 
-  ## Running the code
-
-  Run `npm i` to install the dependencies.
-
-  Run `npm run dev` to start the development server.
-  
+Más detalles en `CLAUDE.md`.

@@ -1,33 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import svgPathsArrow from "@/imports/svg-9d8g8ww63a";
-import svgPaths from "@/imports/svg-mr9pn8979e";
+import svgPathsArrow from '../svg/flecha';
+import { FICHAS_JUGADOR_1, FICHAS_JUGADOR_2 } from '../fichas';
 
-// Importar personajes
-import imgPlayer1Par1 from "figma:asset/1a905b452b8616d4913a87b83d43e3481c6a3fe4.png";
-import imgPlayer2Par1 from "figma:asset/1a8f87ec1a50fa8149e7194149401f3455beb687.png";
-import imgPlayer1Par2 from "figma:asset/3a6ace823d327db09dcd656f77c09193b5ef61b9.png";
-import imgPlayer2Par2 from "figma:asset/a3c754e3e4eed6cd5561053444a996381b35df85.png";
-import imgPlayer1Par3 from "figma:asset/8b179d68c37a2298029b53ee038f299cd8efb1c0.png";
-import imgPlayer2Par3 from "figma:asset/b75a433932d3c96609007e61fadff773aa749af7.png";
-import imgPlayer1Par4 from "figma:asset/34321f44fed05a3d3e6a4756621cef64c98de28b.png";
-import imgPlayer2Par4 from "figma:asset/e67dd1106bb9f0b667c83599a6c2609388803467.png";
-import imgPlayer1Par5 from "figma:asset/d1a529283553aff2c263e6ee185d1ee9c74c552a.png";
-import imgPlayer2Par5 from "figma:asset/96a8aa59fb14ee6592e44c3ec55060cc774e3e57.png";
-import imgPlayer1Par6 from "figma:asset/9de0a1200a24069421bb85979c9b4c6087439a3d.png";
-import imgPlayer2Par6 from "figma:asset/bd2e6f8c83f6c11819140282890f56be385d3872.png";
-import imgPlayer1Par7 from "figma:asset/a04fa8cbd2c0fc35ac30f315f7611fb4b2ede340.png";
-import imgPlayer2Par7 from "figma:asset/4327c21be0afe978f9b5fc7971b8461c2645a608.png";
+const PLAYER1_CHARACTERS = FICHAS_JUGADOR_1;
 
-const PLAYER1_CHARACTERS = [
-  imgPlayer1Par1, imgPlayer1Par2, imgPlayer1Par3, imgPlayer1Par4,
-  imgPlayer1Par5, imgPlayer1Par6, imgPlayer1Par7,
-];
-
-const PLAYER2_CHARACTERS = [
-  imgPlayer2Par1, imgPlayer2Par2, imgPlayer2Par3, imgPlayer2Par4,
-  imgPlayer2Par5, imgPlayer2Par6, imgPlayer2Par7,
-];
+const PLAYER2_CHARACTERS = FICHAS_JUGADOR_2;
 
 type Player = 'X' | 'O';
 type Cell = Player | null;

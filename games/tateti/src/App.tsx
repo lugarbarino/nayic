@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
-import { TatetiGame } from '@/app/components/TatetiGame';
-import { StartMenu } from '@/app/components/StartMenu';
+import { TatetiGame } from './components/TatetiGame';
+import { StartMenu } from './components/StartMenu';
 
 // Detectar si es touch device
 const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
