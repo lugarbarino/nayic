@@ -6,6 +6,7 @@ import Configuracion from "./components/Configuracion";
 import TemaSelector from "./components/TemaSelector";
 import ModoSelector from "./components/ModoSelector";
 import GuiaDeCartas from "./components/GuiaDeCartas";
+import { pantallaCompletaAlJugar } from '../../_shared/pantalla-completa';
 
 // Storage key for game progress
 const STORAGE_KEY = "monster-memory-game-progress";
@@ -91,6 +92,7 @@ export default function App() {
     difficulty: Difficulty,
     level: number,
   ) => {
+    pantallaCompletaAlJugar(); // en celular: sin barras del navegador
     setCurrentDifficulty(difficulty);
     setCurrentLevel(level);
     setCurrentScreen("game");

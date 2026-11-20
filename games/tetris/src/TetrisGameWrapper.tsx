@@ -34,6 +34,7 @@ import thiefImg from './assets/especiales/ladron.webp';
 import fastClockImg from './assets/especiales/reloj.webp';
 import stoneImg from './assets/especiales/piedra.webp';
 import frozenImg from './assets/especiales/congelado.webp';
+import { pantallaCompletaAlJugar } from '../../_shared/pantalla-completa';
 
 // Exportar mapeo de imágenes especiales para uso en otros componentes
 export const SPECIAL_PIECE_IMAGES: Record<string, string> = {
@@ -1147,6 +1148,7 @@ export function TetrisGameWrapper() {
   }, [themeBlocks.length, gameMode]);
 
   const startGame = () => {
+    pantallaCompletaAlJugar(); // en celular: sin barras del navegador
     setIsLoading(true);
     // El gameStarted se setea a true después que el loading complete
   };

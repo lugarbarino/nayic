@@ -3,6 +3,7 @@ import Paletas from './components/PaletasDiseno';
 import { DiceGame } from './components/DiceGame';
 import { CardsGame } from './components/CardsGame';
 import { PalettesGame } from './components/PalettesGame';
+import { pantallaCompletaAlJugar } from '../../_shared/pantalla-completa';
 
 type GameMode = 'menu' | 'cartas' | 'paletas' | 'dados';
 
@@ -10,6 +11,7 @@ export default function App() {
   const [gameMode, setGameMode] = useState<GameMode>('menu');
 
   const handleSelectMode = (mode: 'cartas' | 'paletas' | 'dados') => {
+    pantallaCompletaAlJugar(); // en celular: sin barras del navegador
     setGameMode(mode);
   };
 

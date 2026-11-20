@@ -466,6 +466,7 @@ import imgGalleta from "figma:asset/bb9e302d7e1871d9a11c6d80688aabc4a9966410.png
 import imgSerpienteGameOver from "figma:asset/bbbc3f023a3575a7513d42af028de10cae05fa05.png";
 import imgCactus from "figma:asset/fe38f3b1b0fc196aacc2870cda3359b693751ecb.png";
 import imgHole from "figma:asset/0dfcfc3e93b6d38fd8503fb89c8c0c8cfb34333b.png";
+import { pantallaCompletaAlJugar } from '../../_shared/pantalla-completa';
 
 // Array of all images to preload
 const ALL_IMAGES_TO_PRELOAD = [
@@ -3080,6 +3081,7 @@ export default function App() {
   }, []);
 
   const startGame = useCallback(() => {
+    pantallaCompletaAlJugar(); // en celular: sin barras del navegador
     const initialSnake: SnakeSegment[] = [
       { position: { x: 4, y: 4 }, pattern: 'head' }, // Head doesn't use pattern for rendering
       { position: { x: 3, y: 4 }, pattern: 'pattern1' },
