@@ -1,4 +1,4 @@
-import imgLogo from "figma:asset/0b547d5b3d5dcbb8817314a3b598f0c240e1709b.png";
+import imgLogo from "../assets/logo.webp";
 
 export default function Logo() {
   return (

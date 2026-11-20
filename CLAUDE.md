@@ -70,12 +70,15 @@ Sitio de mini juegos en **nayic.com.ar**: una landing y 6 juegos, todos en este 
    - **Tateti: hecho** (ver `games/tateti/CLAUDE.md`). Es el modelo a seguir: `assets-src/` con originales PNG renombrados → `npm run optimize -- games/<juego>` (script en `scripts/optimize-images.mjs`, usa `sharp` instalado en la raíz) → `src/assets/*.webp`; código en `src/` (`App.tsx`, `components/`, `svg/`, `styles.css`), sin alias `@`, sin plugin `figma-assets`, `package.json` solo con lo que se usa. Verificación: "huella" de la página (textos, imágenes y posiciones) antes y después en 1440px y 390px, más jugar una partida.
    - **Tetris: hecho** (ver `games/tetris/CLAUDE.md`). 20 MB → 1,8 MB.
    - **Gato: hecho** (ver `games/gato/CLAUDE.md`). Estaba en blanco fuera de Figma (faltaba la altura); no le faltaban imágenes (el precargador apuntaba a versiones viejas). 47,7 MB → 4,5 MB.
-   - Siguen: La Viborita, Memoria, CAOS. **Memoria**: revisar si sus "38 imágenes faltantes" son también referencias viejas en un precargador antes de pedir un re-export.
+   - **Memoria: hecho** (ver `games/memoria/CLAUDE.md`). Tampoco faltaban imágenes: la pantalla de carga apuntaba a versiones viejas de 40 cartas; ahora usa los mazos del juego. 71 MB → 6,2 MB.
+   - Siguen: La Viborita y CAOS. Ya no hace falta re-exportar nada de Figma.
+   - Ojo al buscar "versiones correctas" de una imagen: usar solo los archivos que el juego usa de verdad, nunca los `imports/` viejos sin usar (ahí hay versiones desactualizadas con el mismo nombre).
+   - El script de reorganizar falla (sin mover nada) si un archivo importa algo que no está en el mapa: suelen ser imports sin usar; borrarlos y volver a correr.
    - Referencia para comparar: el juego publicado en `*.figma.site` (mientras exista), porque la versión exportada puede tener errores que Figma tapaba.
    - **Herramientas** (en `scripts/`): `analizar-juego.mjs` (qué archivos, paquetes e imágenes se usan; los imports solo de tipos no aparecen, revisarlos a mano) y `reorganizar-juego.mjs` (mueve código e imágenes según un mapa viejo→nuevo y reescribe todos los imports). Para nombrar imágenes: armar una planilla numerada con `sharp` y mirarla.
    - Los exports de Figma traen cosas olvidadas: carteles de depuración, imports a archivos que no existen. Revisar al limpiar.
    - **Bug a revisar en Gato**: igual que Tateti, le falta `html, body, #root { height: 100% }`; en Tateti eso hacía que la pantalla de juego quedara cortada arriba. Tetris no lo tenía (probado).
-2b. Recuperar las imágenes faltantes (Gato y Memoria).
+2b. ~~Recuperar las imágenes faltantes~~ (no faltaban: eran referencias viejas, ya corregido en Gato y Memoria).
 3. Conectar el dominio nayic.com.ar a Vercel.
 4. Un `CLAUDE.md` por juego en `games/<juego>/` con lo propio de cada uno (qué hace, assets, pendientes).
 5. Lista de tareas: decidir entre GitHub Issues (requiere instalar `gh` y loguearse) o un `TASKS.md` en el repo.

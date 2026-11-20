@@ -1,10 +1,10 @@
 import { motion } from 'motion/react';
-import svgPaths from "../imports/svg-iw0hqtljt6";
-import img61 from "figma:asset/d9ce681e04236e6b84ab3c315d31775f6a82456b.png";
-import img1290 from "figma:asset/58f8be9dc479ca431859592bcdb0cbce044045c6.png";
-import img22 from "figma:asset/ca96a3074c164d9036d7b420bf0e513dec1a5ce2.png";
-import img17 from "figma:asset/8af0565be2af0ab9aed4e7000ae9cb8760cba576.png";
-import img1 from "figma:asset/41c21cef901c02aea2ead08edd5a613864d0c6ea.png";
+import svgPaths from "../svg/game-over";
+import img61 from "../assets/decoracion/flores.webp";
+import img1290 from "../assets/decoracion/burbujas.webp";
+import img22 from "../assets/decoracion/fuego.webp";
+import img17 from "../assets/decoracion/nube.webp";
+import img1 from "../assets/decoracion/destellos.webp";
 
 function RefreshCw() {
   return (

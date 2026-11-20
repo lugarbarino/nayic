@@ -1,5 +1,5 @@
-import svgPaths from "../imports/svg-o6jh7x2lsp";
-import imgSnake1 from "figma:asset/bf54a6b9017dd3f234a135bdd258525c98448591.png";
+import svgPaths from "../svg/compartir";
+import imgSnake1 from "../assets/corazon-firma.webp";
 
 function Frame() {
   return (

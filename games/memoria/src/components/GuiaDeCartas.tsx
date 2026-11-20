@@ -1,46 +1,44 @@
 import { useState } from "react";
-import svgPaths from "../imports/svg-3lqgr1kc7o";
-import imgVerCartas1 from "figma:asset/50df561745e166806948d7218e43c826952cf890.png";
-import imgBomba from "figma:asset/433489d86a39e3c139747f0341e375e6eebc4c7f.png";
-import imgGatosMagic02 from "figma:asset/5e48e7fa8ee790fd3c0148ae049b767157121558.png";
-import imgVerCartas2 from "figma:asset/f62b6c16a4ac80afea9b365305a3ef88e87133f5.png";
-import imgEasy from "figma:asset/580131cd10a19aa8ab5d3ca919eacefbe7c60e57.png";
-import imgVerCartas3 from "figma:asset/355ac75d16f94ac73a5847d2313e5c71ea9e84b1.png";
+import svgPaths from "../svg/guia-1";
+import imgVerCartas1 from "../assets/especiales/mezclar-ojo.webp";
+import imgBomba from "../assets/especiales/bomba.webp";
+import imgGatosMagic02 from "../assets/decoracion/anillos.webp";
+import imgVerCartas2 from "../assets/especiales/suerte.webp";
+import imgEasy from "../assets/especiales/enterrada.webp";
+import imgVerCartas3 from "../assets/especiales/pico.webp";
 
 // Elementos images
-import imgElementoCongelada from "figma:asset/8ce711ff33a06bd161590fe669506a9ac66ed56f.png";
-import imgElementoMagica from "figma:asset/24cedf90396b694f937714c129389502ed8097a4.png";
-import imgElementoCongeladaII from "figma:asset/a29b9d7104e1df8ecd6ec339fe4ae3e229949967.png";
-import imgElementoFuego from "figma:asset/9959946bd606dbbc76d922c18711993dd5e0cb0b.png";
-import imgElementoEnterrada from "figma:asset/00d1358d020569606eb1993a7db5b5b2428b3c23.png";
-import imgElementoPico from "figma:asset/580131cd10a19aa8ab5d3ca919eacefbe7c60e57.png";
-import imgElementoNube1 from "figma:asset/15a6ace6b2cdbe828fcae78b43510672c51c03c8.png";
-import imgElementoNube2 from "figma:asset/4577f4ffc63cd16b87b4f3e50dfd5d6905de6509.png";
-import imgElementoMagiaII1 from "figma:asset/e382f64ceae0184dd4445c4a78d2b0e7a9ee096d.png";
-import imgElementoMagiaII2 from "figma:asset/b6eb6905b759277b8a0f1a8f9ecfb3bfc875a43b.png";
+import imgElementoCongelada from "../assets/especiales/congelada.webp";
+import imgElementoMagica from "../assets/especiales/magica.webp";
+import imgElementoCongeladaII from "../assets/guia/congelada.webp";
+import imgElementoFuego from "../assets/especiales/fuego-dificil.webp";
+import imgElementoEnterrada from "../assets/guia/enterrada.webp";
+import imgElementoPico from "../assets/especiales/enterrada.webp";
+import imgElementoNube1 from "../assets/guia/nube.webp";
+import imgElementoNube2 from "../assets/especiales/pista.webp";
+import imgElementoMagiaII1 from "../assets/guia/magica.webp";
+import imgElementoMagiaII2 from "../assets/especiales/pista-magica.webp";
 
 // Detalle imports
-import imgDetalleVerCartas from "figma:asset/ccfb6cf9e0bd8c8a97bc0109f13328ca9bfdf65d.png"; // Ver todas las cartas detalle
-import imgDetalleMezclar from "figma:asset/ccfb6cf9e0bd8c8a97bc0109f13328ca9bfdf65d.png"; // Se mezclan detalle
-import imgDetalleMatch from "figma:asset/f62b6c16a4ac80afea9b365305a3ef88e87133f5.png"; // Ganaste un match detalle
-import imgDetalleBombaMedio from "figma:asset/ccfb6cf9e0bd8c8a97bc0109f13328ca9bfdf65d.png"; // Bomba medio detalle
-import imgDetalleBombaDificil from "figma:asset/ccfb6cf9e0bd8c8a97bc0109f13328ca9bfdf65d.png"; // Bomba difícil detalle
-import imgDetallePico from "figma:asset/ccfb6cf9e0bd8c8a97bc0109f13328ca9bfdf65d.png"; // Pico detalle
+import imgDetalleVerCartas from "../assets/guia/ver-cartas.webp"; // Ver todas las cartas detalle
+import imgDetalleMezclar from "../assets/guia/ver-cartas.webp"; // Se mezclan detalle
+import imgDetalleMatch from "../assets/especiales/suerte.webp"; // Ganaste un match detalle
+import imgDetalleBombaMedio from "../assets/guia/ver-cartas.webp"; // Bomba medio detalle
+import imgDetalleBombaDificil from "../assets/guia/ver-cartas.webp"; // Bomba difícil detalle
+import imgDetallePico from "../assets/guia/ver-cartas.webp"; // Pico detalle
 
-import svgPathsDetalle from "../imports/svg-fsfo3ksrm6";
-import svgPathsMezclar from "../imports/svg-p989wi6x0n";
-import svgPathsMatch from "../imports/svg-zi9s5ajrks";
-import svgPathsBombaDificil from "../imports/svg-bokxdmafc0";
-import svgPathsPico from "../imports/svg-spsfjfve6e";
-import svgPathsBombaMedio from "../imports/svg-0q2p6xos7g";
-import svgPathsSuerte from "../imports/svg-32ti6h6uez";
+import svgPathsDetalle from "../svg/guia-detalle";
+import svgPathsMezclar from "../svg/guia-2";
+import svgPathsBombaDificil from "../svg/guia-3";
+import svgPathsBombaMedio from "../svg/guia-4";
+import svgPathsSuerte from "../svg/guia-5";
 
-import imgEasyPico from "figma:asset/580131cd10a19aa8ab5d3ca919eacefbe7c60e57.png";
-import imgPicoTool from "figma:asset/355ac75d16f94ac73a5847d2313e5c71ea9e84b1.png";
+import imgEasyPico from "../assets/especiales/enterrada.webp";
+import imgPicoTool from "../assets/especiales/pico.webp";
 
-import Group84Nube from "../imports/Group84";
-import Group83MagiaII from "../imports/Group83";
-import Pico from "../imports/Pico-337-213";
+import Group84Nube from "../disenos/guia/Destellos";
+import Group83MagiaII from "../disenos/guia/Anillos";
+import Pico from "../disenos/guia/Pico";
 
 import DetalleDeCarta, { CardDetail } from "./DetalleDeCarta";
 

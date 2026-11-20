@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import svgPaths from "../imports/svg-n9xpf9pkkj";
-import imgFrame18 from "figma:asset/af4219100c39788b8b9af7770f88ff697f491309.png";
-import imgFrame19 from "figma:asset/3de83ad4959ced8fbc59b16c1e9e40de04f8e202.png";
-import imgRectangle24 from "figma:asset/82ff1f85d158c07ce17a89080cb25b523ac067c4.png";
-import imgFrame20 from "figma:asset/8b825f636a64c9fc6841241fad9d3af8bdc771e2.png";
+import svgPaths from "../svg/selector-tema";
+import imgFrame18 from "../assets/cartas/gatos/aire-4.webp";
+import imgFrame19 from "../assets/cartas/animales/fuego-1.webp";
+import imgRectangle24 from "../assets/temas/monstruo-rosa.webp";
+import imgFrame20 from "../assets/cartas/huerto/fuego-1.webp";
 
 const THEME_STORAGE_KEY = 'monster-memory-game-theme';
 

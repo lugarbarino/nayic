@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import svgPaths from "../imports/svg-lgtp51r1x2";
+import svgPaths from "../svg/selector-modo";
 
 const GAME_MODE_STORAGE_KEY = 'monster-memory-game-mode';
 

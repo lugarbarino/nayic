@@ -1,6 +1,6 @@
-import svgPaths from "../imports/svg-cgvjcm0brd";
-import svgPathsCard from "../imports/svg-fsfo3ksrm6";
-import imgVerCartas1 from "figma:asset/50df561745e166806948d7218e43c826952cf890.png";
+import svgPaths from "../svg/detalle-carta";
+import svgPathsCard from "../svg/guia-detalle";
+import imgVerCartas1 from "../assets/especiales/mezclar-ojo.webp";
 
 export interface CardDetail {
   id: string;

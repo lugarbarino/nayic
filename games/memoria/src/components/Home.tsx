@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import svgPathsDesktop from "../imports/svg-ppp8g0j23w";
-import svgPathsMobile from "../imports/svg-foe4m4hr0v";
-import imgRectangle21 from "figma:asset/7eb97dea21773c4999f1239a59536a64b48ced7f.png";
+import svgPathsDesktop from "../svg/inicio-1";
+import svgPathsMobile from "../svg/inicio-2";
+import imgRectangle21 from "../assets/inicio/collage.webp";
 import Logo from "./Logo";
 import ShareBanner from "./ShareBanner";
 
