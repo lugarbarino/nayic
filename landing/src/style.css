@@ -1,0 +1,92 @@
+@font-face { font-family: 'Capriola'; src: url('/fonts/capriola.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'Giant Boss'; src: url('/fonts/giantboss.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; font-weight: 400 700; src: url('/fonts/jakarta-english.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; font-weight: 400 700; src: url('/fonts/jakarta-rest-latin.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; font-display: swap; }
+
+:root {
+  --bg: #2b2031;
+  --bg-dark: #1d171f;
+  --lilac: #d7c1e8;
+  --ink: #3b3b3b;
+  --muted: #756f6c;
+  --brown: #332115;
+}
+
+* { box-sizing: border-box; margin: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: #fff;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-weight: 500;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+
+.layout { display: grid; grid-template-columns: 1fr 2fr; max-width: 1440px; margin: 0 auto; }
+
+/* Barra lateral */
+.side {
+  position: sticky; top: 0; height: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 100px 20px 100px; gap: 40px; text-align: center;
+}
+.logo { width: min(370px, 100%); }
+.tagline { font-family: 'Capriola', sans-serif; font-size: 24px; }
+.origin {
+  margin-top: auto; font-size: 20px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+
+/* Hero */
+.hero { position: relative; height: 609px; overflow: hidden; display: flex; justify-content: center; padding-top: 76px; }
+.hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.more {
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  font-size: 14px; font-weight: 600; text-decoration: none;
+}
+
+/* Tarjetas */
+.card {
+  position: relative; display: block; width: 370px; height: 460px;
+  background: #fff; border-radius: 32px; text-decoration: none;
+  transition: transform .2s ease;
+}
+a.card:hover { transform: translateY(-4px); }
+.card-hero { border-radius: 36px; }
+.card-img { padding: 10px; height: 278px; }
+.card-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 24px; }
+.card-body { padding: 45px 24px 0; text-align: center; }
+.intro { font-size: 16px; color: var(--muted); }
+.title { font-family: 'Capriola', sans-serif; font-size: 24px; color: var(--ink); margin: 6px 0 16px; }
+.play { font-size: 16px; color: var(--brown); text-decoration: underline; text-underline-offset: 3px; }
+.card-hero .play { visibility: hidden; }
+
+/* Juegos */
+.games { background: var(--bg-dark); padding: 80px 20px 60px; text-align: center; }
+.games h2 { font-family: 'Capriola', sans-serif; font-size: 42px; font-weight: 400; }
+.games h3 { font-size: 20px; font-weight: 500; color: var(--lilac); margin: 6px 0 40px; }
+.grid { display: grid; grid-template-columns: repeat(2, 370px); justify-content: center; gap: 40px; }
+.grid .card:last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; }
+
+/* Footer */
+.footer { background: var(--bg-dark); padding: 80px 20px 100px; text-align: center; }
+.footer h3 { font-family: 'Capriola', sans-serif; font-size: 24px; font-weight: 400; }
+.footer h2 { font-family: 'Giant Boss', sans-serif; font-size: 80px; font-weight: 400; color: var(--lilac); line-height: 1.1; }
+.footer a { display: inline-block; margin: 24px 0 40px; font-size: 16px; text-underline-offset: 3px; }
+.footer p { color: var(--lilac); font-size: 16px; }
+
+/* Tablet / móvil: se apila la barra lateral */
+@media (max-width: 1100px) {
+  .layout { grid-template-columns: 1fr; }
+  .side { position: static; height: auto; padding: 40px 20px; gap: 16px; }
+  .origin { margin-top: 8px; }
+  .logo { width: 240px; }
+}
+@media (max-width: 860px) {
+  .grid { grid-template-columns: minmax(0, 370px); }
+  .hero { height: 560px; }
+  .card { width: min(370px, calc(100vw - 40px)); }
+  .games h2 { font-size: 34px; }
+}
