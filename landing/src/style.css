@@ -92,6 +92,8 @@ a.card:focus-visible { outline: 3px solid var(--lilac); outline-offset: 4px; }
 .footer h2 { font-family: 'Giant Boss', sans-serif; font-size: clamp(56px, 14vw, 80px); font-weight: 400; color: var(--lilac); line-height: 1.1; }
 .footer a { display: inline-block; margin: 24px 0 40px; font-size: 16px; text-underline-offset: 3px; padding: 8px; }
 .footer p { color: var(--lilac); font-size: 16px; }
+.hecho-con { display: inline-flex; align-items: center; gap: 6px; }
+.hecho-con img { width: 24px; height: 24px; }
 
 /* Pantallas bajas: el hero no se fija y la barra lateral no se desborda */
 @media (max-height: 640px) {
