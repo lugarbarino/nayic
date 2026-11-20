@@ -28,3 +28,16 @@ document.getElementById('grid').innerHTML = games
   .filter((g) => g.id !== featured.id)
   .map((g) => card(g))
   .join('')
+
+// El corazón de "Hecho con ❤" late dos veces cuando aparece en pantalla (al llegar abajo).
+// Si salís y volvés a bajar, late de nuevo.
+const corazon = document.querySelector('.hecho-con img')
+if (corazon && 'IntersectionObserver' in window) {
+  new IntersectionObserver(
+    ([entrada]) => {
+      if (entrada.isIntersecting) corazon.classList.add('latiendo')
+      else corazon.classList.remove('latiendo')
+    },
+    { threshold: 1 },
+  ).observe(corazon)
+}
