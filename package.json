@@ -4,6 +4,10 @@
   "version": "1.0.0",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "preview": "npx serve dist"
+    "preview": "npx serve dist",
+    "optimize": "node scripts/optimize-images.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.0"
   }
 }
