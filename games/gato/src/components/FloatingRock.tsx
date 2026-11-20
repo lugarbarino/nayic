@@ -23,6 +23,7 @@ import floatingBlue4 from '../assets/flotantes/azul-4.webp';
 import floatingBlue5 from '../assets/flotantes/azul-5.webp';
 
 import { useRef, useState, useEffect } from 'react';
+import { escalaPantalla } from '../escala';
 
 interface FloatingRockProps {
   x: number;
@@ -78,7 +79,7 @@ export default function FloatingRock({ x, y, rockType, colorRegion = 'lila', onL
 
   // Detectar si es mobile o desktop
   const isMobile = window.innerWidth < 768;
-  const scale = isMobile ? 0.15 : 0.3; // Mobile: 85% reducción, Desktop: 70% reducción
+  const scale = (isMobile ? 0.15 : 0.3) * escalaPantalla(); // Mobile: 85% reducción, Desktop: 70% reducción (más chico en pantallas bajas)
 
   // Actualizar shouldAnimate cuando gameTime cambie
   useEffect(() => {

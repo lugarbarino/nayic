@@ -1,5 +1,6 @@
 import ceilingImage from '../assets/escenario/techo.webp';
 import { useEffect, useState } from 'react';
+import { escalaPantalla } from '../escala';
 
 interface CeilingFloorProps {
   bgPosition: number;
@@ -41,7 +42,7 @@ export default function CeilingFloor({ bgPosition, speed }: CeilingFloorProps) {
   const ceilingOffset = -bgPosition % patternWidth;
 
   // Escala: más pequeña en mobile para dar más espacio de juego
-  const scale = isMobile ? 0.5 : 0.6;
+  const scale = (isMobile ? 0.5 : 0.6) * escalaPantalla(); // más chico en pantallas bajas
 
   return (
     <div

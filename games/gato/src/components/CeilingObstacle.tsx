@@ -20,6 +20,7 @@ import ceilingBlue3 from '../assets/techo/azul-3.webp';
 import ceilingBlue4 from '../assets/techo/azul-4.webp';
 
 import { useRef } from 'react';
+import { escalaPantalla } from '../escala';
 
 interface CeilingObstacleProps {
   x: number;
@@ -46,8 +47,9 @@ export default function CeilingObstacle({ x, rockType, colorRegion = 'lila', onL
 
   // Detectar si es mobile o desktop
   const isMobile = window.innerWidth < 768;
-  const scale = isMobile ? 0.25 : 0.3; // Mobile: más grandes, Desktop: 70% reducción
-  const topPosition = isMobile ? '35px' : '40px'; // Mobile: pegado al techo escalado 50%, Desktop: 40px
+  const k = escalaPantalla(); // más chico en pantallas bajas
+  const scale = (isMobile ? 0.25 : 0.3) * k; // Mobile: más grandes, Desktop: 70% reducción
+  const topPosition = `${(isMobile ? 35 : 40) * k}px`; // Mobile: pegado al techo escalado 50%, Desktop: 40px
 
   const handleImageLoad = () => {
     if (imgRef.current && onLoad && !hasCalledOnLoad.current) {

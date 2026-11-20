@@ -1,5 +1,6 @@
 import floorImage from '../assets/escenario/suelo.webp';
 import { useEffect, useState } from 'react';
+import { escalaPantalla } from '../escala';
 
 interface GroundFloorProps {
   bgPosition: number;
@@ -41,7 +42,7 @@ export default function GroundFloor({ bgPosition, speed }: GroundFloorProps) {
   const floorOffset = -bgPosition % patternWidth;
 
   // Escala: más pequeña en mobile para dar más espacio de juego
-  const scale = isMobile ? 0.5 : 0.6;
+  const scale = (isMobile ? 0.5 : 0.6) * escalaPantalla(); // más chico en pantallas bajas
 
   return (
     <div

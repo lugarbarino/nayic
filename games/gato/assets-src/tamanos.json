@@ -4,5 +4,6 @@
   "escenario/": 1600,
   "interfaz/": 1600,
   "logo-gato.png": 1600,
-  "interfaz/corazon-firma.png": 140
+  "interfaz/corazon-firma.png": 140,
+  "suelo/": 2000
 }

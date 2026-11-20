@@ -14,6 +14,12 @@ Se publica en `/gato/`.
 - Peso de imágenes: 47,7 MB → 4,5 MB.
 - **Fluidez (nov 2026)**: el bucle del juego era un `setInterval` de 16ms dentro de un `useEffect` que dependía de `speed`, `gameTime`, `lives`…, así que se destruía y recreaba en cada paso (60 veces por segundo): el ritmo real dependía de cuánto tardaba en redibujar → tirones, y en aparatos lentos todo (incluido el fondo) avanzaba más despacio. Ahora: `requestAnimationFrame` creado una sola vez por partida + `tickRef` con el paso actual + factor `f` de tiempo real (1 = un cuadro de 60fps, tope 3). Todo lo que se mueve "por cuadro" se multiplica por `f`. Medido: se actualiza en cada cuadro de pantalla (120/s en Mac) a ~340 px/s; antes ~57/s con pausas de 25ms. También se arregló el temporizador de limpieza, que dependía de `cameraX` y nunca llegaba a ejecutarse.
 - **Fondo que cambia de color**: es un degradado de 32.846px (morado → rojo → azul → morado) que se desplaza con `bgPosition`; las rocas cambian de color según la zona (`getCurrentColorRegion`): lila hasta 5.318px (~17s), roja hasta 15.845px (~50s), azul hasta 27.831px. Con el bucle nuevo se llega a esos cambios al ritmo previsto en cualquier aparato.
+- **Celular (nov 2026, decisión de Lucía: se juega en horizontal)**:
+  - En celular vertical se muestra el cartel "Girá el celular" (`src/components/GirarCelular.tsx`, consulta `(orientation: portrait) and (pointer: coarse) and (max-width: 900px)`) y el juego se pausa.
+  - `src/escala.ts`: `escalaPantalla()` = alto/700 (máximo 1). Multiplica tamaños del gato, rocas (suelo, techo, flotantes), piso, techo, poderes, murciélago, burbujas **y la velocidad**, así un celular girado (~375px de alto) se juega igual que la compu pero más chico. En pantallas de 700px o más es 1 (sin cambios).
+  - Pantallas de menos de 500px de alto usan el encabezado compacto.
+  - La pantalla de inicio de escritorio se achica entera (`StartScreen.tsx`, alto de diseño 800px); el diseño "celular" del inicio se usa solo en vertical.
+- **Ojo con el tamaño de las imágenes**: las rocas calculan su tamaño con `naturalWidth × escala`, así que achicar sus archivos achica las rocas en el juego. `suelo/` se guarda a ancho original (`tamanos.json`: 2000).
 - **Para medir rendimiento** con el navegador de Claude, el panel tiene que estar visible: si está oculto, el navegador frena la animación (da 3 fps falsos).
 
 ## Estructura
@@ -51,6 +57,5 @@ src/
 - Librerías: solo React y Tailwind.
 
 ## Pendientes / ideas
-- **Celular (pedido por Lucía, "en Figma tampoco andaba bien")**: en vertical (375px de ancho) el gato mide 135px y los obstáculos cruzan la pantalla en ~1s (en compu ~4,5s), porque la velocidad está en píxeles fijos. Ideas: escalar velocidad y tamaños según el ancho, o sugerir girar el teléfono.
 - `inicio/InicioEscritorio.tsx`, `InicioCelular.tsx` y `carga/*` son capas posicionadas a mano exportadas de Figma (muchas medidas fijas): se pueden simplificar.
 - Las listas de imágenes de obstáculos están repetidas en el componente y en `AssetPreloader.tsx`: conviene un solo archivo con las listas.

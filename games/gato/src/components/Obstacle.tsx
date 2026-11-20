@@ -26,6 +26,7 @@ import rockBlue5 from '../assets/suelo/azul-5.webp';
 import rockBlue6 from '../assets/suelo/azul-6.webp';
 
 import { useRef } from 'react';
+import { escalaPantalla } from '../escala';
 
 interface ObstacleProps {
   x: number;
@@ -52,8 +53,9 @@ export default function Obstacle({ x, rockType, colorRegion = 'lila', onLoad }: 
 
   // Detectar si es mobile o desktop
   const isMobile = window.innerWidth < 768;
-  const scale = isMobile ? 0.25 : 0.3; // Mobile: más grandes, Desktop: 70% reducción
-  const bottomPosition = isMobile ? '45px' : '60px'; // Mobile: pegado al piso escalado 50%, Desktop: 60px
+  const k = escalaPantalla(); // más chico en pantallas bajas
+  const scale = (isMobile ? 0.25 : 0.3) * k; // Mobile: más grandes, Desktop: 70% reducción
+  const bottomPosition = `${(isMobile ? 45 : 60) * k}px`; // Mobile: pegado al piso escalado 50%, Desktop: 60px
 
   const handleImageLoad = () => {
     if (imgRef.current && onLoad && !hasCalledOnLoad.current) {

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Frame1 from './FondoDegradado';
+import { esCelularVertical } from './GirarCelular';
 import catBajando from '../assets/gato/bajando.webp'; // Bajando
 import catSubiendo from '../assets/gato/subiendo.webp'; // Subiendo
 import catMantenido from '../assets/gato/volando.webp'; // Mantenido
@@ -17,6 +18,7 @@ import StarPowerUp from './StarPowerUp';
 import Bat from './Bat';
 import Bubble from './Bubble';
 import LoadingScreen from './LoadingScreen';
+import { escalaPantalla, esPantallaBaja } from '../escala';
 
 interface ObstacleType {
   id: number | string;
@@ -273,9 +275,9 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
   const getPlayerX = () => {
     const screenWidth = window.innerWidth;
     if (screenWidth < 768) { // Mobile
-      return 20; // Más atrás en mobile para ver obstáculos con más anticipación
+      return 20 * escalaPantalla(); // Más atrás en mobile para ver obstáculos con más anticipación
     } else { // Desktop
-      return 150; // Posición original en desktop
+      return 150 * escalaPantalla(); // Posición original en desktop (más chica en pantallas bajas)
     }
   };
 
@@ -283,9 +285,9 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
   const getPlayerSize = () => {
     const screenWidth = window.innerWidth;
     if (screenWidth < 768) { // Mobile
-      return 135; // 10% menos que 150 (150 * 0.9 = 135)
+      return 135 * escalaPantalla(); // 10% menos que 150 (150 * 0.9 = 135)
     } else { // Desktop
-      return 180; // 180px en desktop
+      return 180 * escalaPantalla(); // 180px en desktop (más chico en pantallas bajas)
     }
   };
   
@@ -336,7 +338,8 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
       playerRef.current.height = getPlayerSize();
       
       // Detectar si es mobile
-      setIsMobile(window.innerWidth < 768);
+      // Encabezado compacto en celular vertical o en pantallas bajas (celular girado)
+      setIsMobile(window.innerWidth < 768 || esPantallaBaja());
     };
     
     // Ejecutar al inicio
@@ -646,8 +649,8 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
     const screenWidth = window.innerWidth;
     const isMobile = screenWidth < 768;
     
-    const obstacleHeight = isMobile ? 140 : 200; // Reducido en mobile
-    const obstacleWidth = isMobile ? 140 : 200; // Reducido en mobile
+    const obstacleHeight = (isMobile ? 140 : 200) * escalaPantalla(); // Reducido en mobile
+    const obstacleWidth = (isMobile ? 140 : 200) * escalaPantalla(); // Reducido en mobile
     
     const newCeilingObstacle: CeilingObstacleType = {
       id: nextCeilingObstacleId.current++,
@@ -666,8 +669,8 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
     const maxY = 75; // 75% desde arriba
     const yPosition = Math.random() * (maxY - minY) + minY;
     
-    const height = 80; // Altura fija de 80px (20% más chico)
-    const width = 80; // Ancho fijo de 80px (20% más chico)
+    const height = 80 * escalaPantalla(); // 80px (20% más chico), escalado en pantallas bajas
+    const width = 80 * escalaPantalla();
     
     const newLifePowerUp: LifePowerUpType = {
       id: nextLifePowerUpId.current++,
@@ -686,8 +689,8 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
     const maxY = 75; // 75% desde arriba
     const yPosition = Math.random() * (maxY - minY) + minY;
     
-    const height = 120; // Altura fija de 120px
-    const width = 120; // Ancho fijo de 120px
+    const height = 120 * escalaPantalla(); // 120px, escalado en pantallas bajas
+    const width = 120 * escalaPantalla();
     
     const newCrystalPowerUp: CrystalPowerUpType = {
       id: nextCrystalPowerUpId.current++,
@@ -707,8 +710,8 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
     const maxY = 75; // 75% desde arriba
     const yPosition = Math.random() * (maxY - minY) + minY;
     
-    const height = 80; // Altura fija de 80px (20% más chico)
-    const width = 80; // Ancho fijo de 80px (20% más chico)
+    const height = 80 * escalaPantalla(); // 80px (20% más chico), escalado en pantallas bajas
+    const width = 80 * escalaPantalla();
     
     const newStarPowerUp: StarPowerUpType = {
       id: nextStarPowerUpId.current++,
@@ -728,8 +731,8 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
     const maxY = 75; // 75% desde arriba
     const yPosition = Math.random() * (maxY - minY) + minY;
     
-    const height = 120; // Altura fija de 120px (50% más grande)
-    const width = 120; // Ancho fijo de 120px (50% más grande)
+    const height = 120 * escalaPantalla(); // 120px (50% más grande), escalado en pantallas bajas
+    const width = 120 * escalaPantalla();
     
     const newBat: BatType = {
       id: nextBatId.current++,
@@ -746,9 +749,9 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
     const type = Math.floor(Math.random() * 14); // 14 tipos (0-13: 4 brillos + 10 burbujas)
     
     // Los brillos (tipos 0-3) son más pequeños que las burbujas
-    const size = type < 4 
+    const size = (type < 4 
       ? Math.random() * 15 + 10 // Brillos: entre 10 y 25px (reducido de 15-35)
-      : Math.random() * 20 + 15; // Burbujas: entre 15 y 35px (reducido de 20-50)
+      : Math.random() * 20 + 15) * escalaPantalla(); // Burbujas: entre 15 y 35px (reducido de 20-50)
     
     // Generar burbujas muy cerca del gato, en la parte trasera
     const offsetX = Math.random() * 40 - 20; // Variación de -20 a +20px desde el centro
@@ -1053,7 +1056,8 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
   // sin tener que recrearse (antes se destruía y recreaba 60 veces por segundo).
   const tickRef = useRef<(f: number) => void>(() => {});
   tickRef.current = (f: number) => {
-      const currentSpeed = speed * f; // Distancia a mover en este paso
+      // Distancia a mover en este paso (en pantallas bajas el mundo es más chico, así que se mueve menos)
+      const currentSpeed = speed * f * escalaPantalla();
       
       // Mover fondo - incrementar continuamente para ver diferentes partes
       setBgPosition((prev) => prev + currentSpeed);
@@ -1291,7 +1295,8 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
       // Tope de 3 cuadros: si la pestaña estuvo oculta no "salta" de golpe
       const f = Math.min((now - last) / (1000 / 60), 3);
       last = now;
-      tickRef.current(f);
+      // Pausa mientras el celular está en vertical (se muestra el cartel "Girá el celular")
+      if (!esCelularVertical()) tickRef.current(f);
       gameLoopRef.current = requestAnimationFrame(loop);
     };
     gameLoopRef.current = requestAnimationFrame(loop);
