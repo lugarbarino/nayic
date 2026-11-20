@@ -29,5 +29,5 @@ for (const file of readdirSync(src)) {
 
 // Corazón peludo del pie ("Hecho con ❤"): es el MISMO que usan los juegos.
 // No se copia: se toma el original de Tateti y se genera una versión chiquita para la landing.
-await sharp('../games/tateti/assets-src/corazon-firma.png').resize({ width: 96 }).webp({ quality: 85 }).toFile(join(out, 'corazon.webp'))
+await sharp('../games/tateti/assets-src/corazon-firma.png').resize({ width: 128 }).webp({ quality: 85 }).toFile(join(out, 'corazon.webp')) // se ve a 32px
 console.log('ok corazón (desde games/tateti/assets-src/corazon-firma.png)')
