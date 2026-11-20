@@ -55,6 +55,12 @@ Sitio de mini juegos en **nayic.com.ar**: una landing y 6 juegos, todos en este 
 - Solución: `games/_shared/fuentes.css` + `games/_shared/fuentes/*.woff2` (Capriola, Plus Jakarta Sans, Inter; licencia SIL OFL, sacadas de los paquetes `@fontsource` instalados en la raíz). Cada juego lo importa al principio de su CSS (`@import '../../_shared/fuentes.css'`). Los juegos limpios tienen `server.fs.allow: ['..']` en `vite.config.ts` para que funcione en modo dev.
 - **SF Pro** (la más usada) es de Apple y su licencia no permite publicarla: se reemplaza por **Inter**. Con eso Gato quedó igual a Figma salvo diferencias de 1-2px en textos.
 
+## Celular (todos los juegos)
+- Cada juego tiene en su CSS un bloque "===== Celular =====": `html, body` con el **color de fondo del juego** (así al "rebotar" o en los costados no se ve blanco), `overscroll-behavior: none` (sin rebote ni tirar-para-recargar) y alto mínimo `100dvh`. También `theme-color` en `index.html` con ese color (tiñe la barra del navegador).
+- Todos los `h-screen` / `min-h-screen` / `100vh` se pasaron a `h-dvh` / `min-h-dvh` / `100dvh`: el alto **real** visible (descuenta la barra del navegador del celular). No volver a usar `vh`.
+- Botones táctiles: mínimo ~44px. No hacer pantallas como "cajas" de alto fijo con posiciones absolutas desde el centro: usar columnas que fluyan y ocupen `100dvh`.
+- Pendiente aprobado: pantalla completa al tocar "Jugar" (Android) y app web instalable ("Agregar a pantalla de inicio", sin barras también en iPhone). Para los íconos de la app hace falta el ícono de Nayic en 512x512.
+
 ## Juegos y Figma Make (cosas raras)
 - Los imports `figma:asset/<hash>.png` se resuelven con el plugin `games/_shared/figma-assets.js` (ya agregado a `vite.config.ts` de gato, memoria, tateti y tetris; viborita los tiene como alias).
 - **Imágenes faltantes**: el export de Figma Make no trajo 4 imágenes de Gato (pantalla de precarga) y 38 de Juego de memoria (pantalla de carga con hexágonos). El plugin las reemplaza por un píxel transparente y avisa en el build. Para recuperarlas hay que re-exportar esos juegos desde Figma Make (*Download code*) o conseguir las imágenes. Hasta entonces la pantalla de carga de memoria se ve incompleta.

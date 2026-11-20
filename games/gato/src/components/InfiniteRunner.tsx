@@ -1483,7 +1483,7 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
 
   return (
     <div 
-      className={`relative w-full h-screen overflow-hidden cursor-pointer select-none ${isInvulnerable && !starImmunity ? 'animate-screen-shake' : ''}`}
+      className={`relative w-full h-dvh overflow-hidden cursor-pointer select-none ${isInvulnerable && !starImmunity ? 'animate-screen-shake' : ''}`}
       onPointerDown={handleTouchStart}
       style={{ touchAction: 'none' }}
     >

@@ -71,7 +71,7 @@
   }
 
   #root {
-    min-height: 100vh;
+    min-height: 100dvh;
     width: 100%;
   }
 
@@ -274,7 +274,7 @@ img {
 
 /* Prevent layout shift during loading */
 .loading-screen {
-  min-height: 100vh;
+  min-height: 100dvh;
   min-height: 100dvh; /* Dynamic viewport height for mobile */
 }
 
@@ -314,4 +314,18 @@ img {
   body {
     min-height: -webkit-fill-available;
   }
+}
+
+/* ===== Celular =====
+   - Fondo del color del juego: cuando el celular "rebota" al deslizar, o el navegador
+     rellena los costados, se ve este color y no blanco.
+   - Sin rebote ni "tirar para recargar" mientras se juega.
+   - Alto real de la pantalla (dvh): descuenta la barra del navegador. */
+html, body {
+  background-color: #16203a;
+  overscroll-behavior: none;
+}
+html, body, #root {
+  min-height: 100%;
+  min-height: 100dvh;
 }

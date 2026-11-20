@@ -272,11 +272,14 @@ export default function Home({ onStartGame, completedLevels, scores, onOpenSetti
   const maxScore = 24000;
 
   return (
-    <div className="relative size-full min-h-screen" style={{ backgroundImage: "linear-gradient(179.423deg, rgb(25, 13, 26) 1.1129%, rgb(78, 41, 82) 59.8%)" }}>
-      {/* MOBILE VERSION */}
-      <div className="block min-[900px]:hidden">
+    <div className="relative size-full min-h-dvh" style={{ backgroundImage: "linear-gradient(179.423deg, rgb(25, 13, 26) 1.1129%, rgb(78, 41, 82) 59.8%)" }}>
+      {/* MOBILE VERSION
+          Columna que fluye (sin posiciones fijas): logo arriba, niveles, y abajo las
+          ilustraciones con "Compartilo" ocupando el espacio que sobre. Así se adapta a
+          cualquier alto de celular sin huecos ni superposiciones. */}
+      <div className="flex min-[900px]:hidden flex-col h-dvh min-h-[560px]">
         {/* Header - Logo and Settings */}
-        <div className="absolute content-stretch flex items-center justify-between left-0 pl-[16px] pr-[18.064px] py-0 top-[22px] w-full">
+        <div className="relative content-stretch flex items-center justify-between pl-[16px] pr-[18.064px] pt-[22px] w-full shrink-0">
           <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0">
             <Logo />
           </div>
@@ -307,7 +310,7 @@ export default function Home({ onStartGame, completedLevels, scores, onOpenSetti
         </div>
 
         {/* Niveles Section */}
-        <div className="absolute content-stretch flex flex-col gap-[9.032px] items-start left-0 px-[18.064px] py-0 top-[calc(50%-114px)] translate-y-[-50%] w-full">
+        <div className="relative content-stretch flex flex-col gap-[9.032px] items-start px-[18.064px] pt-[20px] w-full shrink-0">
           
           {/* Difficulty Blocks - Horizontal Scroll */}
           <div className="content-stretch flex gap-[14.451px] items-center relative shrink-0 -mx-[18.064px] px-[18.064px] w-[calc(100%+36.128px)] overflow-x-auto scrollbar-hide snap-x snap-mandatory" style={{ WebkitOverflowScrolling: 'touch' }}>
@@ -349,21 +352,21 @@ export default function Home({ onStartGame, completedLevels, scores, onOpenSetti
           </div>
         </div>
 
-        {/* Bottom Section - Character Images and Share Banner */}
-        <div className="absolute contents left-1/2 top-[calc(50%+200.5px)] translate-x-[-50%] translate-y-[-50%]">
-          <div className="absolute h-[401px] left-1/2 top-[calc(50%+200.5px)] translate-x-[-50%] translate-y-[-50%] w-[414px]">
+        {/* Bottom Section - Character Images and Share Banner (ocupa el espacio que sobra) */}
+        <div className="relative flex-1 min-h-0 flex items-center justify-center w-full overflow-hidden">
+          {/* la ilustración se achica para entrar en el espacio que queda (alto y ancho) */}
+          <div className="relative h-full max-h-[401px] max-w-full aspect-[414/401]">
             <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-contain pointer-events-none size-full" src={imgRectangle21} />
-          </div>
-          
-          {/* NAYIC Footer - Mobile */}
-          <div className="absolute left-[calc(50%-0.46px)] top-[calc(50%+180px)] translate-x-[-50%] translate-y-[-50%] scale-[0.80]">
-            <ShareBanner />
+            {/* NAYIC Footer - Mobile */}
+            <div className="absolute left-1/2 top-[calc(50%-20px)] translate-x-[-50%] translate-y-[-50%] scale-[0.80]">
+              <ShareBanner />
+            </div>
           </div>
         </div>
       </div>
 
       {/* DESKTOP VERSION */}
-      <div className="hidden min-[900px]:block bg-gradient-to-b from-[#1a0e1b] to-[#4d2951] relative size-full min-h-screen" data-name="d_home">
+      <div className="hidden min-[900px]:block bg-gradient-to-b from-[#1a0e1b] to-[#4d2951] relative size-full min-h-dvh" data-name="d_home">
         <div className="absolute content-stretch flex flex-col items-center left-1/2 -translate-x-1/2 pb-[20px] pt-0 px-0 top-[26px] w-auto max-w-[1200px]">
           {/* Top section with Logo and Settings */}
           <div className="content-stretch flex flex-col gap-[30px] items-center mb-[-20px] relative shrink-0 w-full">

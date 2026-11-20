@@ -17,6 +17,9 @@ Se publica en `/memoria/`. El tema y el modo elegidos se guardan en el navegador
 - Se sacaron 7 imports que no se usaban.
 - Peso de imágenes: 71 MB → 6,2 MB.
 
+- **Tablero auto-ajustable** (`Game.tsx`, "Cards Grid"): se mide el tamaño natural del tablero y se elige la escala más grande que entre debajo del encabezado (140px celular / 210px compu) en el alto real de la pantalla, centrado y sin scroll. La escala por nivel de `getCardScale()` es solo un tope (×1,2). Se sacaron los márgenes negativos a mano por nivel.
+- **Inicio en celular** (`Home.tsx`): columna que fluye en `h-dvh` (logo + Ajustes, tarjetas de niveles, ilustración con "Compartilo" que se achica para entrar). Antes eran posiciones fijas desde el centro: en celulares altos quedaba un hueco y en bajos la tarjeta tapaba el logo. Probado en 375x667, 390x844 y 430x932.
+
 ## Estructura
 ```
 assets-src/                 originales PNG (NO se publican)

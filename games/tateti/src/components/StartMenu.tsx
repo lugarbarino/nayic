@@ -32,7 +32,7 @@ export function StartMenu({ onStartGame }: StartMenuProps) {
 
   return (
     <div 
-      className="relative size-full min-h-screen flex items-center justify-center p-4 md:p-4"
+      className="relative size-full min-h-dvh flex items-center justify-center p-4 md:p-4"
       style={{ 
         backgroundImage: "linear-gradient(105.242deg, rgb(12, 14, 23) 0%, rgb(65, 76, 125) 115.08%)" 
       }}

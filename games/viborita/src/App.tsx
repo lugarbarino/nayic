@@ -3184,7 +3184,7 @@ export default function App() {
   // Mostrar pantalla de carga con progreso
   if (isLoading) {
     return (
-      <div className="w-full h-screen relative">
+      <div className="w-full h-dvh relative">
         <Loading />
         {/* Barra de progreso dinámica */}
         <div className="absolute left-1/2 top-[calc(50%+64.5px)] translate-x-[-50%] translate-y-[-50%]">
@@ -3201,7 +3201,7 @@ export default function App() {
   // Mostrar pantalla de selección de modo
   if (showModoScreen) {
     return (
-      <div className="w-full h-screen relative">
+      <div className="w-full h-dvh relative">
         <ModoScreen 
           onClose={closeModoScreen} 
           gameMode={gameMode}
@@ -3236,7 +3236,7 @@ export default function App() {
   // Mostrar pantalla de comida
   if (showComidaScreen) {
     return (
-      <div className="w-full h-screen relative">
+      <div className="w-full h-dvh relative">
         <ComidaScreen onClose={closeComidaScreen} />
         <Toaster 
           position="bottom-center" 
@@ -3267,7 +3267,7 @@ export default function App() {
   // Mostrar pantalla de ajustes
   if (showSettings) {
     return (
-      <div className="w-full h-screen relative">
+      <div className="w-full h-dvh relative">
         <AjustesScreen 
           onClose={closeSettings} 
           gameMode={gameMode}

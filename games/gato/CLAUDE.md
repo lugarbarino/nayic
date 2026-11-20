@@ -25,6 +25,8 @@ Se publica en `/gato/`.
 - **Ojo con el tamaño de las imágenes**: las rocas calculan su tamaño con `naturalWidth × escala`, así que achicar sus archivos achica las rocas en el juego. `suelo/` se guarda a ancho original (`tamanos.json`: 2000).
 - **Para medir rendimiento** con el navegador de Claude, el panel tiene que estar visible: si está oculto, el navegador frena la animación (da 3 fps falsos).
 
+- Cartel "Girá el celular": ícono SVG propio (celular + flecha curva) con animación que gira 90° y vuelve; se queda quieto si el sistema pide menos movimiento.
+
 ## Estructura
 ```
 assets-src/                 originales PNG (NO se publican)

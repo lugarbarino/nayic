@@ -11,6 +11,8 @@ Se publica en `/tateti/`.
 - **Limpio, sin nada de Figma** (piloto de la limpieza, nov 2026). Comparado contra la versión anterior: menú idéntico en desktop (1440px) y celular (390px); se juega igual.
 - Se arregló que la pantalla de juego quedaba cortada arriba (faltaba `height: 100%` en `html, body, #root`; ver `src/styles.css`).
 
+- Celular: el "Salir" del juego es un botón de 48x48 solo con la flecha (antes medía 50x26).
+
 ## Estructura
 ```
 assets-src/            originales PNG (NO se publican)

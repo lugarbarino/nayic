@@ -266,7 +266,7 @@ export default function Configuracion({ onClose, onOpenThemeSelector, onOpenMode
   };
 
   return (
-    <div className="backdrop-blur-[3.8px] backdrop-filter relative size-full min-h-screen" data-name="Ajustes" style={{ backgroundImage: "linear-gradient(179.983deg, rgb(27, 15, 28) 0%, rgb(76, 41, 80) 63.316%)" }}>
+    <div className="backdrop-blur-[3.8px] backdrop-filter relative size-full min-h-dvh" data-name="Ajustes" style={{ backgroundImage: "linear-gradient(179.983deg, rgb(27, 15, 28) 0%, rgb(76, 41, 80) 63.316%)" }}>
       {/* Exit Button - Fixed position */}
       <button
         onClick={onClose}

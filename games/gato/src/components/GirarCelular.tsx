@@ -30,11 +30,24 @@ export default function GirarCelular() {
       role="dialog"
       aria-label="Girá el celular para jugar"
     >
-      <svg className="girar-celular-icono" width="96" height="96" viewBox="0 0 96 96" fill="none" aria-hidden="true">
-        <rect x="30" y="12" width="36" height="64" rx="7" stroke="white" strokeWidth="4" />
-        <circle cx="48" cy="66" r="3" fill="white" />
-        <path d="M14 58a34 34 0 0 1 8-30" stroke="#f2abb5" strokeWidth="4" strokeLinecap="round" />
-        <path d="M17 22l5 6 6-5" stroke="#f2abb5" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+      <style>{`
+        @keyframes girar-celular {
+          0%, 20% { transform: rotate(0deg); }
+          45%, 75% { transform: rotate(90deg); }
+          100% { transform: rotate(0deg); }
+        }
+        .girar-celular-telefono { transform-origin: 60px 60px; animation: girar-celular 2.6s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) { .girar-celular-telefono { animation: none; } }
+      `}</style>
+      <svg width="120" height="120" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+        {/* Flecha curva (sentido horario) alrededor del celular */}
+        <path d="M44.3 16.8 A46 46 0 0 1 103.2 44.3" stroke="#f2abb5" strokeWidth="5" strokeLinecap="round" />
+        <path d="M106.3 32.7 L103.2 44.3 L93.4 37.4" stroke="#f2abb5" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+        {/* Celular que gira de vertical a horizontal */}
+        <g className="girar-celular-telefono">
+          <rect x="43" y="30" width="34" height="60" rx="7" stroke="white" strokeWidth="5" />
+          <circle cx="60" cy="81" r="3" fill="white" />
+        </g>
       </svg>
       <p className="font-['Capriola:Regular',sans-serif] text-[28px] leading-tight text-white">Girá el celular</p>
       <p className="font-['Plus_Jakarta_Sans:Medium',sans-serif] text-[17px] leading-snug text-[#f2abb5] max-w-[260px]">

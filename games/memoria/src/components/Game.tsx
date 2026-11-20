@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { motion } from "motion/react";
 import { Settings } from "lucide-react";
 import LoadingScreen from "./LoadingScreen";
@@ -4697,9 +4697,33 @@ export default function Game({
   const cardScale = getCardScale();
   const gridLayout = getGridLayout();
 
+  // Ajuste automático del tablero al espacio disponible (ver "Cards Grid" más abajo)
+  const tableroRef = useRef<HTMLDivElement>(null);
+  const [ajusteTablero, setAjusteTablero] = useState<{ escala: number; w: number; h: number } | null>(null);
+  useLayoutEffect(() => {
+    const medir = () => {
+      const el = tableroRef.current;
+      if (!el) return;
+      const w = el.offsetWidth; // tamaño natural, sin escalar
+      const h = el.offsetHeight;
+      if (!w || !h) return;
+      const altoEncabezado = window.innerWidth >= 907 ? 210 : 140;
+      const margen = 16;
+      const anchoLibre = window.innerWidth - margen * 2;
+      const altoLibre = window.innerHeight - altoEncabezado - margen * 2;
+      const escala = Math.min(anchoLibre / w, altoLibre / h, cardScale * 1.2);
+      setAjusteTablero((prev) =>
+        prev && Math.abs(prev.escala - escala) < 0.001 && prev.w === w && prev.h === h ? prev : { escala, w, h }
+      );
+    };
+    medir();
+    window.addEventListener("resize", medir);
+    return () => window.removeEventListener("resize", medir);
+  }, [cards.length, level, difficulty, cardScale, isLoading]);
+
   return (
     <div
-      className="bg-gradient-to-b from-[#1c101d] min-h-screen to-[#4b294f]"
+      className="bg-gradient-to-b from-[#1c101d] min-h-dvh to-[#4b294f]"
       data-name="Nivel facil"
     >
       {isLoading && (
@@ -4928,30 +4952,44 @@ export default function Game({
         </div>
       )}
 
-      {/* Cards Grid */}
+      {/* Cards Grid
+          El tablero se AJUSTA SOLO al espacio libre debajo del encabezado (alto real de la
+          pantalla, sin la barra del navegador): se mide su tamaño natural y se elige la escala
+          más grande que entre sin scroll, centrado. La escala de cada nivel (getCardScale) se
+          usa como tope, así los niveles con pocas fichas no quedan gigantes. */}
       <div
-        className={`box-border content-stretch flex flex-col items-center pb-[16.193px] px-0 w-full min-h-[calc(100vh-140px)] min-[907px]:min-h-[calc(100vh-210px)] ${difficulty === "hard" && (level === 4 || level === 5 || level === 6) ? "-mt-[100px] min-[907px]:-mt-[20px]" : difficulty === "hard" && (level === 7 || level === 8) ? "-mt-[50px]" : difficulty === "hard" ? "-mt-[100px]" : difficulty === "easy" && level === 7 ? "-mt-[80px]" : difficulty === "easy" && level === 8 ? "-mt-[120px] min-[907px]:-mt-[100px]" : difficulty === "medium" && level === 1 ? "-mt-[100px]" : difficulty === "medium" && level === 2 ? "-mt-[50px]" : difficulty === "medium" && level === 3 ? "-mt-[130px]" : difficulty === "medium" && level === 4 ? "-mt-[200px]" : difficulty === "medium" && level === 5 ? "-mt-[100px]" : difficulty === "medium" && level === 6 ? "-mt-[80px]" : difficulty === "medium" && level === 7 ? "-mt-[80px]" : difficulty === "medium" && level === 8 ? "-mt-[150px]" : "pt-[60px] min-[907px]:pt-[80px]"}`}
+        className="box-border flex items-center justify-center w-full overflow-hidden h-[calc(100dvh-140px)] min-[907px]:h-[calc(100dvh-210px)]"
       >
         <div
-          className="content-stretch flex flex-col items-center gap-0"
-          style={{ transform: `scale(${cardScale})` }}
+          className="relative shrink-0"
+          style={ajusteTablero ? { width: ajusteTablero.w * ajusteTablero.escala, height: ajusteTablero.h * ajusteTablero.escala } : undefined}
         >
-          {gridLayout.map((row, rowIndex) => (
-            <div
-              key={rowIndex}
-              className="box-border content-stretch flex items-center justify-center mb-[-16.193px] relative shrink-0"
-            >
-              {cards.slice(row[0], row[1]).map((card) => (
-                <GameCard
-                  key={card.id}
-                  card={card}
-                  onClick={() => handleCardClick(card.id)}
-                  difficulty={difficulty}
-                  theme={theme}
-                />
-              ))}
-            </div>
-          ))}
+          <div
+            ref={tableroRef}
+            className="content-stretch flex flex-col items-center gap-0 absolute left-0 top-0 pb-[16.193px]"
+            style={{
+              transform: `scale(${ajusteTablero ? ajusteTablero.escala : cardScale})`,
+              transformOrigin: "top left",
+              visibility: ajusteTablero ? "visible" : "hidden",
+            }}
+          >
+            {gridLayout.map((row, rowIndex) => (
+              <div
+                key={rowIndex}
+                className="box-border content-stretch flex items-center justify-center mb-[-16.193px] relative shrink-0"
+              >
+                {cards.slice(row[0], row[1]).map((card) => (
+                  <GameCard
+                    key={card.id}
+                    card={card}
+                    onClick={() => handleCardClick(card.id)}
+                    difficulty={difficulty}
+                    theme={theme}
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

@@ -430,7 +430,7 @@ export function TatetiGame({ mode, onBackToMenu, player1Character, player2Charac
 
   return (
     <div 
-      className="relative size-full min-h-screen"
+      className="relative size-full min-h-dvh"
       data-name="tateti"
       style={{ backgroundImage: "linear-gradient(105.242deg, rgb(12, 14, 23) 0%, rgb(65, 76, 125) 115.08%)" }}
     >
@@ -438,20 +438,18 @@ export function TatetiGame({ mode, onBackToMenu, player1Character, player2Charac
       <div className="md:hidden relative size-full flex flex-col items-center justify-center p-4">
         {/* Header - Botón Salir y Turno de */}
         <div className={`absolute top-[60px] left-0 right-0 flex items-center justify-between px-[27px] ${winner ? 'blur-sm' : ''}`}>
-          {/* Botón Salir */}
+          {/* Botón Salir: solo la flecha, grande para el dedo (48px) */}
           <button
             onClick={onBackToMenu}
-            className="bg-[#2c3455] flex gap-[2px] items-center p-[5px] rounded-[8px] cursor-pointer relative"
+            aria-label="Salir"
+            className="bg-[#2c3455] flex items-center justify-center size-[48px] rounded-[14px] cursor-pointer relative shrink-0"
           >
-            <div className="relative shrink-0 size-[16px]">
+            <div className="relative shrink-0 size-[24px]">
               <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
                 <path d={svgPathsArrow.pbf7d180} stroke="#F3F3F4" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
               </svg>
             </div>
-            <p className="font-['SF_Pro',sans-serif] font-bold leading-[16px] text-[#f3f3f4] text-[10px] text-center" style={{ fontVariationSettings: "'wdth' 100" }}>
-              Salir
-            </p>
-            <div className="absolute inset-0 pointer-events-none rounded-[inherit] shadow-[inset_0px_-4px_9px_0px_rgba(0,0,0,0.4)]" />
+            <div className="absolute inset-0 pointer-events-none rounded-[inherit] shadow-[inset_0px_-6px_6px_0px_rgba(0,0,0,0.3)]" />
           </button>
 
           {/* Turno de */}

@@ -48,7 +48,7 @@ export function LoadingScreen({ onLoadComplete }: LoadingScreenProps) {
   }, [onLoadComplete]);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden" style={{ backgroundImage: "linear-gradient(142.009deg, rgb(15, 23, 43) 0%, rgb(29, 41, 61) 100%), linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%)" }}>
+    <div className="relative w-full h-dvh overflow-hidden" style={{ backgroundImage: "linear-gradient(142.009deg, rgb(15, 23, 43) 0%, rgb(29, 41, 61) 100%), linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%)" }}>
       {/* Piezas decorativas flotantes */}
       <div className="animate-float-slow -translate-x-1/2 -translate-y-1/2 absolute flex h-[42.882px] items-center justify-center left-[calc(50%-352.75px)] top-[calc(50%+215.94px)] w-[38.503px]">
         <div className="flex-none rotate-[-20.85deg]">

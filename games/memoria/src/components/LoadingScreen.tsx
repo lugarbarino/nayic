@@ -201,7 +201,7 @@ export default function LoadingScreen({ progress = 0, theme = 'monstruos', onLoa
   return (
     <>
       {/* Mobile version - visible on screens < 768px */}
-      <div className="md:hidden bg-gradient-to-b from-[#1a0e1b] relative min-h-screen w-screen overflow-hidden to-[#4d2951] fixed inset-0 z-50">
+      <div className="md:hidden bg-gradient-to-b from-[#1a0e1b] relative min-h-dvh w-screen overflow-hidden to-[#4d2951] fixed inset-0 z-50">
         {/* Hexagons and characters for mobile... */}
         <motion.div className="absolute flex h-[72px] items-center justify-center left-[calc(50%+141px)] top-[calc(50%+254.5px)] translate-x-[-50%] translate-y-[-50%] w-[78px]" animate={{ y: [0, 8, 0] }} transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}>
           <div className="flex-none rotate-[180deg] scale-y-[-100%]">
@@ -334,7 +334,7 @@ export default function LoadingScreen({ progress = 0, theme = 'monstruos', onLoa
       </div>
 
       {/* Desktop version - visible on screens >= 768px */}
-      <div className="hidden md:block bg-gradient-to-b from-[#1a0e1b] relative min-h-screen w-screen overflow-hidden to-[#4d2951] fixed inset-0 z-50">
+      <div className="hidden md:block bg-gradient-to-b from-[#1a0e1b] relative min-h-dvh w-screen overflow-hidden to-[#4d2951] fixed inset-0 z-50">
         <motion.div className="absolute flex h-[72px] items-center justify-center left-[calc(50%-131.5px)] top-[calc(50%+161.5px)] translate-x-[-50%] translate-y-[-50%] w-[78px]" animate={{ y: [0, 8, 0] }} transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}>
           <div className="flex-none rotate-[180deg] scale-y-[-100%]">
             <div className="blur-[3.35px] filter h-[72px] overflow-clip relative w-[78px]">

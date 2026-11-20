@@ -71,7 +71,7 @@ export function DesktopGameLayout({
         className="relative flex gap-[100px] items-start"
         style={{
           // Escalar proporcionalmente si no cabe
-          transform: 'scale(min(1, (100vw - 80px) / 920px, (100vh - 80px) / 930px))',
+          transform: 'scale(min(1, (100vw - 80px) / 920px, (100dvh - 80px) / 930px))',
           transformOrigin: 'center center',
         }}
       >

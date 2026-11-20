@@ -1256,7 +1256,7 @@ export function TetrisGameWrapper() {
 
   if (!gameStarted) {
     return (
-      <div className="min-h-screen w-full">
+      <div className="min-h-dvh w-full">
         {isLoading ? (
           <LoadingScreen onLoadComplete={handleLoadComplete} />
         ) : (
@@ -1284,12 +1284,12 @@ export function TetrisGameWrapper() {
     },
     'mobile-large': {
       background: 'linear-gradient(178.613deg, rgb(21, 31, 51) 0.549%, rgb(27, 38, 58) 99.451%)',
-      containerClass: 'relative w-full h-screen max-w-[393px] flex flex-col items-center justify-center',
+      containerClass: 'relative w-full h-dvh max-w-[393px] flex flex-col items-center justify-center',
       boardStyle: { width: 'min(300px, calc(100vw - 92px))', aspectRatio: '13/27' },
     },
     'mobile-small': {
       background: 'linear-gradient(179.026deg, rgb(21, 31, 51) 0.549%, rgb(27, 38, 58) 99.451%)',
-      containerClass: 'relative w-full h-screen max-w-[400px] flex flex-col items-center justify-center',
+      containerClass: 'relative w-full h-dvh max-w-[400px] flex flex-col items-center justify-center',
       boardStyle: { width: 'min(210px, calc(100vw - 92px))', aspectRatio: '13/27' },
     },
   };
@@ -1301,8 +1301,8 @@ export function TetrisGameWrapper() {
       className="relative w-full flex items-center justify-center overflow-hidden"
       style={{ 
         backgroundImage: config.background,
-        height: screenSize !== 'desktop' ? `${viewportHeight}px` : '100vh',
-        minHeight: screenSize !== 'desktop' ? `${viewportHeight}px` : '100vh',
+        height: screenSize !== 'desktop' ? `${viewportHeight}px` : '100dvh',
+        minHeight: screenSize !== 'desktop' ? `${viewportHeight}px` : '100dvh',
       }}
     >
       {screenSize === 'desktop' ? (

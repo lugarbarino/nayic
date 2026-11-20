@@ -225,7 +225,7 @@ export function TetrisStartScreen({ onStart, gameMode = 'clasico', onGameModeCha
 
   // Desktop layout
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center" data-name="Tetris start" style={{ backgroundImage: "linear-gradient(145.892deg, rgb(15, 23, 43) 0%, rgb(29, 41, 61) 100%), linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%)" }}>
+    <div className="relative min-h-dvh w-full flex items-center justify-center" data-name="Tetris start" style={{ backgroundImage: "linear-gradient(145.892deg, rgb(15, 23, 43) 0%, rgb(29, 41, 61) 100%), linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%)" }}>
       <div className="content-stretch flex flex-col gap-[50px] items-center justify-center w-[369px]">
         {/* Logo */}
         <div className="h-[83.263px] relative shrink-0 w-[368px]" data-name="Logo">

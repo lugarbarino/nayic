@@ -3,7 +3,7 @@
 
 /* Altura completa de la página */
 @layer base {
-  html, body, #root { min-height: 100vh; height: 100%; margin: 0; }
+  html, body, #root { min-height: 100dvh; height: 100%; margin: 0; }
 }
 
 /* ===== Tema y animaciones (del diseño original) ===== */
@@ -71,7 +71,7 @@
 
   body {
     @apply text-foreground;
-    min-height: 100vh;
+    min-height: 100dvh;
     background: linear-gradient(180deg, #1c101d 0%, #4b294f 100%) fixed;
   }
 
@@ -175,4 +175,18 @@ html {
       transform: translateY(0);
     }
   }
+}
+
+/* ===== Celular =====
+   - Fondo del color del juego: cuando el celular "rebota" al deslizar, o el navegador
+     rellena los costados, se ve este color y no blanco.
+   - Sin rebote ni "tirar para recargar" mientras se juega.
+   - Alto real de la pantalla (dvh): descuenta la barra del navegador. */
+html, body {
+  background-color: #341b37;
+  overscroll-behavior: none;
+}
+html, body, #root {
+  min-height: 100%;
+  min-height: 100dvh;
 }

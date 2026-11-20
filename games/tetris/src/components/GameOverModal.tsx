@@ -70,7 +70,7 @@ export function GameOverModal({ score, onPlayAgain, onClose }: GameOverModalProp
           top: `calc(50% + ${verticalOffset})`,
           transform: 'translate(-50%, -50%)',
           width: `min(${368 * scale}px, calc(100vw - 40px))`,
-          height: `min(${494 * scale}px, calc(100vh - 40px))`,
+          height: `min(${494 * scale}px, calc(100dvh - 40px))`,
           padding: `${34.035 * scale}px ${30.844 * scale}px`,
         }}
       >
