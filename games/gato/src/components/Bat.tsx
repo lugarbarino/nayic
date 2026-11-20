@@ -49,6 +49,7 @@ export default function Bat({ x, y, width, height, id }: BatProps) {
     <img
       src={batFrames[currentFrame]}
       alt="Bat"
+      data-hit={`murcielago-${id}`}
       className="absolute z-30"
       style={{
         left: `${x}px`,

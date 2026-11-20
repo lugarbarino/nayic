@@ -27,6 +27,7 @@ interface CeilingObstacleProps {
   rockType: number; // 0-4 (5 tipos de estalactitas)
   colorRegion?: 'lila' | 'red' | 'blue'; // Región de color
   onLoad?: (width: number, height: number) => void;
+  hitId?: string; // marca para el sistema de choques (data-hit)
 }
 
 const ceilingImagesLila = [ceiling0, ceiling1, ceiling2, ceiling3, ceiling4];
@@ -39,7 +40,7 @@ const ceilingImagesByRegion = {
   blue: ceilingImagesBlue,
 };
 
-export default function CeilingObstacle({ x, rockType, colorRegion = 'lila', onLoad }: CeilingObstacleProps) {
+export default function CeilingObstacle({ x, rockType, colorRegion = 'lila', onLoad, hitId }: CeilingObstacleProps) {
   const ceilingImages = ceilingImagesByRegion[colorRegion];
   const ceilingImage = ceilingImages[rockType % ceilingImages.length];
   const imgRef = useRef<HTMLImageElement>(null);
@@ -74,6 +75,7 @@ export default function CeilingObstacle({ x, rockType, colorRegion = 'lila', onL
       ref={imgRef}
       src={ceilingImage}
       alt="Stalactite"
+      data-hit={hitId}
       className="absolute"
       onLoad={handleImageLoad}
       style={{

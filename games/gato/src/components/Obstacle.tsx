@@ -33,6 +33,7 @@ interface ObstacleProps {
   rockType: number; // 0-6 (7 tipos de rocas del suelo)
   colorRegion?: 'lila' | 'red' | 'blue'; // Región de color
   onLoad?: (width: number, height: number) => void;
+  hitId?: string; // marca para el sistema de choques (data-hit)
 }
 
 const rockImagesLila = [rock0, rock1, rock2, rock3, rock4, rock5, rock6];
@@ -45,7 +46,7 @@ const rockImagesByRegion = {
   blue: rockImagesBlue,
 };
 
-export default function Obstacle({ x, rockType, colorRegion = 'lila', onLoad }: ObstacleProps) {
+export default function Obstacle({ x, rockType, colorRegion = 'lila', onLoad, hitId }: ObstacleProps) {
   const rockImages = rockImagesByRegion[colorRegion];
   const rockImage = rockImages[rockType % rockImages.length];
   const imgRef = useRef<HTMLImageElement>(null);
@@ -80,6 +81,7 @@ export default function Obstacle({ x, rockType, colorRegion = 'lila', onLoad }: 
       ref={imgRef}
       src={rockImage}
       alt="Obstacle"
+      data-hit={hitId}
       className="absolute"
       onLoad={handleImageLoad}
       style={{

@@ -33,6 +33,7 @@ interface FloatingRockProps {
   speed?: number;
   onLoad?: (width: number, height: number) => void;
   gameTime?: number; // Tiempo de juego en segundos
+  hitId?: string; // marca para el sistema de choques (data-hit)
 }
 
 const floatingRockImagesLila = [
@@ -68,7 +69,7 @@ const floatingRockImagesByRegion = {
   blue: floatingRockImagesBlue,
 };
 
-export default function FloatingRock({ x, y, rockType, colorRegion = 'lila', onLoad, gameTime = 0 }: FloatingRockProps) {
+export default function FloatingRock({ x, y, rockType, colorRegion = 'lila', onLoad, gameTime = 0, hitId }: FloatingRockProps) {
   const floatingRockImages = floatingRockImagesByRegion[colorRegion];
   const rockImage = floatingRockImages[rockType % floatingRockImages.length];
   const imgRef = useRef<HTMLImageElement>(null);
@@ -109,6 +110,7 @@ export default function FloatingRock({ x, y, rockType, colorRegion = 'lila', onL
       ref={imgRef}
       src={rockImage}
       alt="Floating Rock"
+      data-hit={hitId}
       className="absolute"
       onLoad={handleImageLoad}
       style={{

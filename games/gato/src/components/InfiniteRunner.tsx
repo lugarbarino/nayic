@@ -19,6 +19,7 @@ import Bat from './Bat';
 import Bubble from './Bubble';
 import LoadingScreen from './LoadingScreen';
 import { escalaPantalla, esPantallaBaja } from '../escala';
+import { chocaConGato } from '../colision';
 
 interface ObstacleType {
   id: number | string;
@@ -99,6 +100,14 @@ interface InfiniteRunnerProps {
   onExit?: () => void;
 }
 
+// Ajuste del vuelo (en % del alto de la pantalla). Cambiar acá para que se sienta distinto.
+const VUELO = {
+  empuje: 450,       // aceleración hacia arriba mientras apretás (%/s²)
+  gravedad: 400,     // aceleración hacia abajo al soltar (%/s²): alta para que al soltar baje enseguida
+  subidaMaxima: 75,  // velocidad máxima subiendo (%/s)
+  caidaMaxima: 95,   // velocidad máxima cayendo (%/s)
+};
+
 export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
   const [bgPosition, setBgPosition] = useState(0);
   const [cameraX, setCameraX] = useState(0); // Posición de la cámara en el mundo (en píxeles)
@@ -147,7 +156,9 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
   const nextStarPowerUpId = useRef(0);
   const nextBatId = useRef(0);
   const nextBubbleId = useRef(0);
-  const velocityRef = useRef(0); // Velocidad vertical del jugador
+  const velocityRef = useRef(0); // Velocidad vertical del jugador (negativa = sube; la usa la animación del gato)
+  const vyRef = useRef(0); // Velocidad vertical en % de pantalla por segundo (positiva = sube)
+  const flotandoRef = useRef(false); // ¿Está apretando? (ref para que la física lo lea al instante)
   const alternateTopBottom = useRef(true); // true = arriba, false = abajo
   
   // Sistema de rotación de assets para evitar repeticiones
@@ -495,7 +506,9 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
     setBgPosition(0);
     setSpeed(5);
     setIsFloating(false);
+    flotandoRef.current = false;
     velocityRef.current = 0;
+    vyRef.current = 0;
     nextObstacleId.current = 0;
     nextFloatingObstacleId.current = 0;
     nextCeilingObstacleId.current = 0;
@@ -532,16 +545,22 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
   // Función para flotar (mantener presionado)
   const startFloating = useCallback(() => {
     if (!gameOver && gameStarted) {
+      flotandoRef.current = true;
       setIsFloating(true);
     }
   }, [gameOver, gameStarted]);
 
   const stopFloating = useCallback(() => {
+    flotandoRef.current = false;
     setIsFloating(false);
   }, []);
 
   // Detectar toque en pantalla para mobile
-  const handleTouchStart = useCallback((e: React.TouchEvent | React.MouseEvent) => {
+  // Mouse, dedo o lápiz: un solo manejador (pointer events). Al soltar en CUALQUIER lugar
+  // (aunque sea fuera del juego) deja de subir, así el gato nunca queda "trabado" subiendo.
+  const handleTouchStart = useCallback((e: React.PointerEvent) => {
+    // Los botones del encabezado (Salir, modo) funcionan normal, sin hacer volar al gato
+    if ((e.target as HTMLElement).closest('button')) return;
     e.preventDefault();
     if (!gameStarted) {
       startGame();
@@ -550,23 +569,29 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
     }
   }, [gameStarted, startGame, startFloating]);
 
-  const handleTouchEnd = useCallback((e: React.TouchEvent | React.MouseEvent) => {
-    e.preventDefault();
-    stopFloating();
+  useEffect(() => {
+    const soltar = () => stopFloating();
+    window.addEventListener('pointerup', soltar);
+    window.addEventListener('pointercancel', soltar);
+    window.addEventListener('blur', soltar);
+    return () => {
+      window.removeEventListener('pointerup', soltar);
+      window.removeEventListener('pointercancel', soltar);
+      window.removeEventListener('blur', soltar);
+    };
   }, [stopFloating]);
 
   // Detectar teclas para desktop
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === 'Space' || e.code === 'ArrowUp') {
-        // Prevenir comportamiento por defecto (como scroll con espacio)
+        // Prevenir comportamiento por defecto (scroll, o "apretar" el botón que quedó seleccionado)
         e.preventDefault();
-        
-        // NO procesar si el target es un botón o elemento clickeable
-        const target = e.target as HTMLElement;
-        if (target && (target.tagName === 'BUTTON' || target.onclick !== null)) {
-          return;
-        }
+        if (e.repeat) return; // mantener apretado no repite el evento
+
+        // Si quedó seleccionado un botón (por ej. "Iniciar Juego"), lo soltamos para que
+        // la barra espaciadora no lo vuelva a apretar
+        (document.activeElement as HTMLElement | null)?.blur?.();
         
         // Si el juego no ha empezado, iniciarlo
         if (!gameStarted && !gameOver) {
@@ -576,6 +601,7 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
         
         // Si el juego está en marcha, flotar
         if (gameStarted && !gameOver) {
+          flotandoRef.current = true;
           setIsFloating(true);
         }
       }
@@ -584,6 +610,7 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
     const handleKeyUp = (e: KeyboardEvent) => {
       if (e.code === 'Space' || e.code === 'ArrowUp') {
         e.preventDefault();
+        flotandoRef.current = false;
         setIsFloating(false);
       }
       // Tecla D para debug
@@ -771,138 +798,26 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
   }, []);
 
   // Verificar colisiones
+  // Descarta rápido lo que está lejos del gato en horizontal (antes de mirar formas)
+  const cercaDelGato = (x: number, ancho: number) => {
+    const p = playerRef.current;
+    // si el ancho todavía no se conoce (o quedó viejo) suponemos uno grande: mejor revisar de más
+    return x < p.x + p.width + 20 && x + Math.max(ancho, 700) > p.x - 20;
+  };
+
   const checkCollision = useCallback((obstacle: ObstacleType) => {
-    const player = playerRef.current;
-    const screenHeight = window.innerHeight;
-    
-    // Reducir el hitbox del gato a la mitad izquierda (solo el cuerpo, sin el jetpack)
-    const hitboxWidthRatio = 0.5; // Solo el 50% del ancho (mitad izquierda)
-    const hitboxHeightRatio = 0.7; // 70% de la altura
-    const hitboxWidth = player.width * hitboxWidthRatio;
-    const hitboxHeight = player.height * hitboxHeightRatio;
-    
-    // Margen de redondeo para evitar colisiones en las esquinas
-    const roundingMargin = 15; // Píxeles de margen para "redondear" las esquinas
-    
-    // Offset para centrar el hitbox en la mitad derecha del gato
-    const hitboxOffsetX = player.width * 0.25;
-    const hitboxOffsetY = player.height * 0.15;
-    
-    // El jugador está posicionado con bottom: playerY% (0-100%)
-    const playerBottomPercent = player.y;
-    const playerBottomPixels = (screenHeight * playerBottomPercent) / 100;
-    const playerTop = screenHeight - playerBottomPixels - hitboxHeight - hitboxOffsetY + roundingMargin;
-    const playerBottom = screenHeight - playerBottomPixels - hitboxOffsetY - roundingMargin;
-    const playerLeft = player.x + hitboxOffsetX + roundingMargin;
-    const playerRight = playerLeft + hitboxWidth - roundingMargin * 2;
-
-    // Posición del obstáculo (solo en la parte de abajo) con bordes redondeados
-    const obstacleLeft = obstacle.x + roundingMargin;
-    const obstacleRight = obstacle.x + obstacle.width - roundingMargin;
-    const obstacleTop = screenHeight - obstacle.height + roundingMargin;
-    const obstacleBottom = screenHeight;
-
-    // Verificar colisión con la plataforma de roca
-    if (
-      playerRight > obstacleLeft &&
-      playerLeft < obstacleRight &&
-      playerBottom > obstacleTop
-    ) {
-      return true;
-    }
-    
-    return false;
+    // Choque por forma real con lo dibujado en pantalla (ver src/colision.ts)
+    return cercaDelGato(obstacle.x, obstacle.width) && chocaConGato(`suelo-${obstacle.id}`);
   }, []);
 
   // Verificar colisiones con rocas flotantes
   const checkFloatingCollision = useCallback((obstacle: FloatingObstacleType) => {
-    const player = playerRef.current;
-    const screenHeight = window.innerHeight;
-    
-    // Reducir el hitbox del gato a la mitad izquierda (solo el cuerpo, sin el jetpack)
-    const hitboxWidthRatio = 0.5; // Solo el 50% del ancho (mitad izquierda)
-    const hitboxHeightRatio = 0.7; // 70% de la altura
-    const hitboxWidth = player.width * hitboxWidthRatio;
-    const hitboxHeight = player.height * hitboxHeightRatio;
-    
-    // Margen de redondeo para evitar colisiones en las esquinas
-    const roundingMargin = 25; // Píxeles de margen para "redondear" las esquinas y reducir zona de colisión
-    
-    // Offset para centrar el hitbox en la mitad derecha del gato
-    const hitboxOffsetX = player.width * 0.25;
-    const hitboxOffsetY = player.height * 0.15;
-    
-    // El jugador está posicionado con bottom: playerY% (0-100%)
-    const playerBottomPercent = player.y;
-    const playerBottomPixels = (screenHeight * playerBottomPercent) / 100;
-    const playerTop = screenHeight - playerBottomPixels - hitboxHeight - hitboxOffsetY + roundingMargin;
-    const playerBottom = screenHeight - playerBottomPixels - hitboxOffsetY - roundingMargin;
-    const playerLeft = player.x + hitboxOffsetX + roundingMargin;
-    const playerRight = playerLeft + hitboxWidth - roundingMargin * 2;
-
-    // Posición de la roca flotante con bordes redondeados
-    // obstacle.y es un porcentaje que representa el TOP de la imagen (no el centro)
-    const obstacleYPixels = (screenHeight * obstacle.y) / 100;
-    const obstacleTop = obstacleYPixels + roundingMargin;
-    const obstacleBottom = obstacleYPixels + obstacle.height - roundingMargin;
-    const obstacleLeft = obstacle.x + roundingMargin;
-    const obstacleRight = obstacle.x + obstacle.width - roundingMargin;
-
-    // Verificar colisión con la roca flotante
-    if (
-      playerRight > obstacleLeft &&
-      playerLeft < obstacleRight &&
-      playerBottom > obstacleTop &&
-      playerTop < obstacleBottom
-    ) {
-      return true;
-    }
-    
-    return false;
+    return cercaDelGato(obstacle.x, obstacle.width) && chocaConGato(`flotante-${obstacle.id}`);
   }, []);
 
   // Verificar colisiones con estalactitas del techo
   const checkCeilingCollision = useCallback((obstacle: CeilingObstacleType) => {
-    const player = playerRef.current;
-    const screenHeight = window.innerHeight;
-    
-    // Reducir el hitbox del gato a la mitad izquierda (solo el cuerpo, sin el jetpack)
-    const hitboxWidthRatio = 0.5; // Solo el 50% del ancho (mitad izquierda)
-    const hitboxHeightRatio = 0.7; // 70% de la altura
-    const hitboxWidth = player.width * hitboxWidthRatio;
-    const hitboxHeight = player.height * hitboxHeightRatio;
-    
-    // Margen de redondeo para evitar colisiones en las esquinas
-    const roundingMargin = 15; // Píxeles de margen para "redondear" las esquinas
-    
-    // Offset para centrar el hitbox en la mitad derecha del gato
-    const hitboxOffsetX = player.width * 0.25;
-    const hitboxOffsetY = player.height * 0.15;
-    
-    // El jugador está posicionado con bottom: playerY% (0-100%)
-    const playerBottomPercent = player.y;
-    const playerBottomPixels = (screenHeight * playerBottomPercent) / 100;
-    const playerTop = screenHeight - playerBottomPixels - hitboxHeight - hitboxOffsetY + roundingMargin;
-    const playerBottom = screenHeight - playerBottomPixels - hitboxOffsetY - roundingMargin;
-    const playerLeft = player.x + hitboxOffsetX + roundingMargin;
-    const playerRight = playerLeft + hitboxWidth - roundingMargin * 2;
-
-    // Posición de la estalactita (cuelga desde arriba) con bordes redondeados
-    const obstacleLeft = obstacle.x + roundingMargin;
-    const obstacleRight = obstacle.x + obstacle.width - roundingMargin;
-    const obstacleTop = 0;
-    const obstacleBottom = obstacle.height - roundingMargin;
-
-    // Verificar colisión con la estalactita
-    if (
-      playerRight > obstacleLeft &&
-      playerLeft < obstacleRight &&
-      playerTop < obstacleBottom
-    ) {
-      return true;
-    }
-    
-    return false;
+    return cercaDelGato(obstacle.x, obstacle.width) && chocaConGato(`techo-${obstacle.id}`);
   }, []);
 
   // Verificar colisiones con power-ups de vida
@@ -1015,38 +930,7 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
 
   // Verificar colisiones con murciélagos
   const checkBatCollision = useCallback((bat: BatType) => {
-    const player = playerRef.current;
-    const screenHeight = window.innerHeight;
-    
-    // Margen de tolerancia reducido para power-ups pequeños
-    const hitboxMargin = 10; // Reducido para permitir colisiones más fáciles
-    
-    // El jugador está posicionado con bottom: playerY% (0-100%)
-    const playerBottomPercent = player.y;
-    const playerBottomPixels = (screenHeight * playerBottomPercent) / 100;
-    const playerTop = screenHeight - playerBottomPixels - player.height + hitboxMargin;
-    const playerBottom = screenHeight - playerBottomPixels - hitboxMargin;
-    const playerLeft = player.x + hitboxMargin;
-    const playerRight = playerLeft + player.width - (hitboxMargin * 2);
-
-    // Posición del murciélago (usa `top` desde arriba)
-    const batYPixels = (screenHeight * bat.y) / 100;
-    const batTop = batYPixels - bat.height / 2 + hitboxMargin;
-    const batBottom = batYPixels + bat.height / 2 - hitboxMargin;
-    const batLeft = bat.x + hitboxMargin;
-    const batRight = batLeft + bat.width - (hitboxMargin * 2);
-
-    // Verificar colisión con el murciélago
-    if (
-      playerRight > batLeft &&
-      playerLeft < batRight &&
-      playerBottom > batTop &&
-      playerTop < batBottom
-    ) {
-      return true;
-    }
-    
-    return false;
+    return cercaDelGato(bat.x, bat.width) && chocaConGato(`murcielago-${bat.id}`);
   }, []);
 
   // Game loop principal
@@ -1064,22 +948,25 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
       setCameraX((prev) => prev + currentSpeed); // Incrementar posición de cámara para cargar obstáculos pre-generados
 
       // Aplicar física de flotación al jugador
+      // Física del vuelo tipo jetpack: mientras apretás, acelera hacia arriba; al soltar, la
+      // gravedad lo frena y lo hace caer. Todo en % del alto de la pantalla por segundo, así se
+      // siente igual en cualquier pantalla. (Y va de 0 = abajo a 100 = arriba.)
       setPlayerY((prevY) => {
-        const floatForce = -1.2; // Fuerza de flotación cuando se presiona espacio
-        const gravity = 0.6; // Gravedad que empuja hacia abajo
-        
-        // Aplicar fuerza según si está flotando o no
-        if (isFloating) {
-          velocityRef.current = floatForce;
-        } else {
-          velocityRef.current = gravity; // Cae cuando no presiona
-        }
-        
-        // Actualizar posición (Y va de 0 a 100, donde 0 es abajo y 100 es arriba)
-        const newY = prevY - velocityRef.current * f;
-        
-        // Limitar entre 0 y 100
-        return Math.max(0, Math.min(100, newY));
+        const dt = f / 60;
+        let vy = vyRef.current;
+        vy += (flotandoRef.current ? VUELO.empuje : -VUELO.gravedad) * dt;
+        vy = Math.max(-VUELO.caidaMaxima, Math.min(VUELO.subidaMaxima, vy));
+        let y = prevY + vy * dt;
+
+        // Límites: no atraviesa el piso ni se va por arriba de la pantalla
+        const altoGato = (playerRef.current.height / window.innerHeight) * 100;
+        const yMax = 100 - altoGato;
+        if (y <= 0) { y = 0; vy = Math.max(vy, 0); }
+        if (y >= yMax) { y = yMax; vy = Math.min(vy, 0); }
+
+        vyRef.current = vy;
+        velocityRef.current = -vy; // para la animación del gato (negativo = subiendo)
+        return y;
       });
 
       // Mover obstáculos y verificar colisiones
@@ -1597,10 +1484,8 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
   return (
     <div 
       className={`relative w-full h-screen overflow-hidden cursor-pointer select-none ${isInvulnerable && !starImmunity ? 'animate-screen-shake' : ''}`}
-      onMouseDown={handleTouchStart}
-      onMouseUp={handleTouchEnd}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
+      onPointerDown={handleTouchStart}
+      style={{ touchAction: 'none' }}
     >
       {/* Fondo infinito */}
       <div className="absolute inset-0 z-0 bg-[#5F285F]">
@@ -1637,13 +1522,13 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
       <img
         src={catFrame === 1 ? catBajando : catFrame === 2 ? catSubiendo : catMantenido}
         alt="Player"
+        data-hit="gato"
         className={`absolute ${isInvulnerable && !starImmunity ? 'animate-shake animate-flash opacity-70' : ''}`}
         style={{
           left: `${playerRef.current.x}px`,
           bottom: `${playerRef.current.y}%`,
           width: `${playerRef.current.width}px`,
           height: `${playerRef.current.height}px`,
-          transition: 'bottom 0.1s ease',
           filter: starImmunity ? 'drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)) brightness(1.2)' : 'none',
         }}
       />
@@ -1652,6 +1537,7 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
       {obstacles.map((obstacle) => (
         <Obstacle
           key={obstacle.id}
+          hitId={`suelo-${obstacle.id}`}
           x={obstacle.x}
           rockType={obstacle.rockType}
           colorRegion={obstacle.colorRegion}
@@ -1674,6 +1560,7 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
       {floatingObstacles.map((obstacle) => (
         <FloatingRock
           key={obstacle.id}
+          hitId={`flotante-${obstacle.id}`}
           x={obstacle.x}
           y={obstacle.y}
           rockType={obstacle.rockType}
@@ -1696,6 +1583,7 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
       {ceilingObstacles.map((obstacle) => (
         <CeilingObstacle
           key={obstacle.id}
+          hitId={`techo-${obstacle.id}`}
           x={obstacle.x}
           rockType={obstacle.rockType}
           colorRegion={obstacle.colorRegion}
