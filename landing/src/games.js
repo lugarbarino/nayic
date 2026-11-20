@@ -5,10 +5,8 @@ export const games = [
   { id: 'gato', title: 'Gato', intro: 'Click para flotar, evitá las rocas:', img: '/img/gato.webp', href: '/gato/' },
   { id: 'memoria', title: 'Juego de memoria', intro: 'Entrená tu mente:', img: '/img/memoria.webp', href: '/memoria/' },
   { id: 'tateti', title: 'Tateti', intro: 'No necesita introducción:', img: '/img/tateti.webp', href: '/tateti/' },
+  { id: 'caos', title: 'CAOS', intro: 'Cartas, paletas y dados:', img: '/img/caos.webp', href: '/caos/' },
 ]
-
-// Tarjeta de relleno para el próximo juego (sacala o completala cuando haya uno).
-export const nextGame = { title: 'Nombre del juego', intro: 'breve intro:', img: '/img/proximo.webp' }
 
 // Juego destacado en el hero
 export const featured = games[0]

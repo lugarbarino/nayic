@@ -1,8 +1,8 @@
-import { games, nextGame, featured } from './games.js'
+import { games, featured } from './games.js'
 
 // Las tarjetas muestran la imagen a 350x268 (guardada al doble para pantallas retina)
 const card = (g, { cls = '', link = true, priority = false } = {}) => `
-  <${link ? `a href="${g.href}"` : 'div'} class="card ${cls}">
+  <${link ? `a href="${g.href}"${g.external ? ' target="_blank" rel="noopener"' : ''}` : 'div'} class="card ${cls}">
     <div class="card-img">
       <img src="${g.img}" alt="${g.title}" width="350" height="268"
         ${priority ? 'fetchpriority="high"' : 'loading="lazy" decoding="async"'} />
@@ -23,5 +23,8 @@ document.getElementById('hero').innerHTML = `
     <img src="/img/icon-arrow.svg" alt="" width="8" height="9" />
   </a>`
 
-document.getElementById('grid').innerHTML =
-  games.map((g) => card(g)).join('') + card(nextGame, { link: false })
+// La grilla muestra todos menos el destacado (ya está en el hero)
+document.getElementById('grid').innerHTML = games
+  .filter((g) => g.id !== featured.id)
+  .map((g) => card(g))
+  .join('')

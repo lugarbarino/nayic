@@ -23,7 +23,9 @@ body {
 img { display: block; max-width: 100%; }
 a { color: inherit; }
 
-.layout { display: grid; grid-template-columns: 1fr 2fr; max-width: 1440px; margin: 0 auto; }
+/* Ocupa todo el ancho de la pantalla (sin franjas a los costados):
+   barra lateral de 480px como en el diseño (1/3 de la pantalla si es más chica) y la columna principal se estira */
+.layout { display: grid; grid-template-columns: clamp(340px, 33.333vw, 480px) minmax(0, 1fr); }
 
 /* Barra lateral (fija en desktop) */
 .side {
@@ -31,8 +33,8 @@ a { color: inherit; }
   display: flex; flex-direction: column; align-items: center;
   padding: clamp(32px, 11vh, 100px) 20px; gap: 40px; text-align: center;
 }
-.logo { width: min(370px, 100%); height: auto; }
-.tagline { font-family: 'Capriola', sans-serif; font-size: 24px; line-height: 1.3; }
+.logo { width: min(370px, 100%); height: auto; aspect-ratio: 335 / 97.3513; flex-shrink: 0; }
+.tagline { font-family: 'Capriola', sans-serif; font-size: 24px; line-height: 1.3; flex-shrink: 0; }
 .origin {
   margin-top: auto; font-size: 20px;
   display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -40,9 +42,10 @@ a { color: inherit; }
 
 /* Hero */
 .hero {
-  position: relative; min-height: 609px; overflow: hidden;
+  min-height: 609px; overflow: hidden;
   display: flex; justify-content: center; align-items: flex-start;
   padding: 76px 20px 90px;
+  position: sticky; top: 0; z-index: 0;
 }
 .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .more {
@@ -69,24 +72,31 @@ a.card:focus-visible { outline: 3px solid var(--lilac); outline-offset: 4px; }
 .card-hero .play { visibility: hidden; }
 
 /* Juegos */
-.games { background: var(--bg-dark); padding: 80px 20px 60px; text-align: center; }
+.games { position: relative; z-index: 1; background: var(--bg-dark); padding: 80px 20px 60px; text-align: center; }
 .games h2 { font-family: 'Capriola', sans-serif; font-size: clamp(32px, 5vw, 42px); font-weight: 400; }
 .games h3 { font-size: 20px; font-weight: 500; color: var(--lilac); margin: 6px 0 40px; }
+/* Tarjetas en filas que se acomodan solas; la última fila siempre queda centrada */
 .grid {
-  display: grid; justify-content: center; gap: 40px;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 370px));
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 40px;
   max-width: 780px; margin: 0 auto;
 }
-.grid .card:last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; }
+.grid .card { flex: 0 1 370px; }
+/* Pantallas muy anchas: 3 por fila para no dejar tanto espacio vacío */
+@media (min-width: 1920px) {
+  .grid { max-width: 1200px; }
+}
 
 /* Footer */
-.footer { background: var(--bg-dark); padding: 80px 20px 100px; text-align: center; }
+.footer { position: relative; z-index: 1; background: var(--bg-dark); padding: 80px 20px 100px; text-align: center; }
 .footer h3 { font-family: 'Capriola', sans-serif; font-size: 24px; font-weight: 400; }
 .footer h2 { font-family: 'Giant Boss', sans-serif; font-size: clamp(56px, 14vw, 80px); font-weight: 400; color: var(--lilac); line-height: 1.1; }
 .footer a { display: inline-block; margin: 24px 0 40px; font-size: 16px; text-underline-offset: 3px; padding: 8px; }
 .footer p { color: var(--lilac); font-size: 16px; }
 
-/* Pantallas bajas: la barra lateral no se desborda */
+/* Pantallas bajas: el hero no se fija y la barra lateral no se desborda */
+@media (max-height: 640px) {
+  .hero { position: relative; }
+}
 @media (min-width: 1101px) and (max-height: 700px) {
   .side { gap: 20px; padding-top: 32px; padding-bottom: 32px; }
   .logo { width: min(280px, 100%); }
