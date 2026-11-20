@@ -9,7 +9,7 @@ Leé esto primero. Resume todo lo decidido para no tener que re-explicar.
 - No hay `gh` ni Homebrew en su Mac. El permiso de `git push` a veces lo bloquea el sistema: en ese caso dale el comando para pegar en la app Terminal.
 
 ## Qué es
-Sitio de mini juegos en **nayic.com.ar**: una landing y 6 juegos (5 en este repo + CAOS, todavía en Figma). Todo se publica junto en un único proyecto de Vercel (plan Hobby, cuenta personal).
+Sitio de mini juegos en **nayic.com.ar**: una landing y 6 juegos, todos en este repo. Todo se publica junto en un único proyecto de Vercel (plan Hobby, cuenta personal).
 
 ```
 /            -> landing/            (Vite, JS vanilla)
@@ -18,12 +18,13 @@ Sitio de mini juegos en **nayic.com.ar**: una landing y 6 juegos (5 en este repo
 /gato/       -> games/gato          Gato (corre y flota, evita rocas)
 /memoria/    -> games/memoria       Juego de memoria
 /tateti/     -> games/tateti        Tateti
-CAOS         -> https://caosdecolor.figma.site/   (6.º juego: aún en Figma, NO está en este repo)
+/caos/       -> games/caos          CAOS de color (retos, paletas y números al azar para dibujar)
 ```
 
 - Los juegos vienen de **Figma Make** (React + Vite + Tailwind). Son proyectos independientes con su propio `package.json`.
 - La landing la reconstruí desde el sitio de Figma Sites publicado (que no permite exportar código).
-- Hoy los links públicos van a `*.figma.site` (laviborita, ttris, gatovolador, juegodememoria, tateti). La landing nueva ya apunta a `/<juego>/`; los juegos salen de Figma cuando el dominio pase a Vercel.
+- Hoy los links públicos van a `*.figma.site` (laviborita, ttris, gatovolador, juegodememoria, tateti, caosdecolor). La landing nueva ya apunta a `/<juego>/`; los juegos salen de Figma cuando el dominio pase a Vercel.
+- **Exports nuevos de Figma Make** (como CAOS, nov 2026) ya traen su propio resolvedor de `figma:asset` en `vite.config.ts` y vienen con todas las imágenes. Re-exportar Gato y Memoria probablemente recupere sus imágenes faltantes.
 
 ## Build y deploy
 - `node scripts/build.mjs` compila la landing y cada juego (`vite build --base=/<juego>/ --outDir dist`) y lo junta todo en `dist/`.
@@ -33,7 +34,7 @@ CAOS         -> https://caosdecolor.figma.site/   (6.º juego: aún en Figma, NO
 - Dominio: pendiente de conectar. Agregar `nayic.com.ar` en Vercel → Settings → Domains y cargar los registros DNS donde esté el DNS del dominio (NIC Argentina u otro; hoy apunta a Figma Sites). Figma sigue online hasta cambiar el DNS.
 
 ## Landing (`landing/`)
-- Edita los juegos en `landing/src/games.js` (lista, textos, imágenes, rutas). Los 6 juegos son tarjetas reales; CAOS tiene `external: true` y abre el sitio de Figma en otra pestaña.
+- Edita los juegos en `landing/src/games.js` (lista, textos, imágenes, rutas). Los 6 juegos son tarjetas reales; `featured` va en el hero y la grilla muestra los demás. Si algún juego vive fuera del sitio, `external: true` lo abre en otra pestaña.
 - Estilos en `landing/src/style.css`. Imágenes en `landing/public/img`, fuentes en `landing/public/fonts`.
 - **Imágenes**: los originales PNG están en `landing/assets-src/` (NO se publican). `npm run optimize` (en `landing/`, usa `sharp`) genera los WebP livianos en `public/img` (tarjetas a 700px, hero en 1200/2000px con `srcset`, y `og.jpg` para redes). Para cambiar una imagen: reemplazá el original en `assets-src/` y corré `npm run optimize`. Peso de la landing: ~0,8 MB (antes 17 MB).
 - **Responsive** (hecho): la página ocupa SIEMPRE todo el ancho (nada de `max-width` que deje franjas a los costados). Barra lateral `clamp(340px, 33.333vw, 480px)` y columna principal fluida. Barra fija solo en ≥1101px; en tablet/móvil va apilada arriba. Hero fijo (`sticky`) y las secciones de abajo suben por encima. Grilla con flex-wrap: 2 por fila (3 en ≥1920px), la última fila siempre centrada; la grilla no repite el juego destacado del hero. Logo con `aspect-ratio` fijo (el SVG tiene `preserveAspectRatio="none"`, no deformarlo). Probado a 390, 820, 1280, 1728, 1920 y 2560px.
@@ -52,7 +53,8 @@ CAOS         -> https://caosdecolor.figma.site/   (6.º juego: aún en Figma, NO
 ## Pendientes
 1. Optimizar el peso de los juegos (dist: memoria ~68 MB, viborita ~51 MB, gato ~46 MB, tetris ~20 MB): convertir sus PNG a WebP. La landing ya está optimizada.
 2. Revisar el responsive/uso en móvil de cada juego (solo se revisó la landing).
-1b. Traer CAOS al repo: exportar el código desde Figma Make (*Download code*), ponerlo en `games/caos/`, cambiar su `href` en `landing/src/games.js` a `/caos/` y sacar `external`. Mientras tanto la landing lo enlaza a caosdecolor.figma.site.
+1b. ~~Traer CAOS al repo~~ (hecho: `games/caos/`, probado en `/caos/`). Detalle pendiente: en pantallas bajas (≈600px de alto) los 3 botones de abajo tapan la bajada "para que cada dibujo sea una aventura distinta" (ya pasaba en la versión de Figma).
+1c. Limpieza de los juegos (plan propuesto, pendiente de arrancar): un solo proyecto para landing + juegos, borrar lo que Figma agrega y no se usa (~75% de los archivos, los 48 componentes de `ui/`, la mayoría de `imports/`, casi todas las dependencias), renombrar imágenes con nombres legibles y pasarlas a WebP, carpeta `shared/` común y plantilla para juegos nuevos. Empezar por Tateti como prueba.
 2b. Recuperar las imágenes faltantes (Gato y Memoria).
 3. Conectar el dominio nayic.com.ar a Vercel.
 4. Un `CLAUDE.md` por juego en `games/<juego>/` con lo propio de cada uno (qué hace, assets, pendientes).
