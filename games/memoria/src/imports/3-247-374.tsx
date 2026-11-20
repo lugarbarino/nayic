@@ -1,0 +1,130 @@
+import svgPaths from "./svg-qvb0c6zxgf";
+import imgEasy from "figma:asset/346fdfb0733c3e301006d5ae43040659e3332f82.png";
+
+function ArrowLeft() {
+  return (
+    <div className="mb-[-2px] relative shrink-0 size-[24px]" data-name="Arrow left">
+      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
+        <g id="Arrow left">
+          <path d={svgPaths.pbf7d180} id="Icon" stroke="var(--stroke-0, #F3F3F4)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+        </g>
+      </svg>
+    </div>
+  );
+}
+
+function Frame() {
+  return (
+    <div className="absolute bg-[#4b294f] content-stretch flex flex-col items-center justify-center left-[30px] pb-[27px] pt-[25px] px-[25px] rounded-[30px] shadow-[0px_1px_17.9px_4px_rgba(0,0,0,0.15)] size-[75px] top-[23px]">
+      <ArrowLeft />
+      <p className="font-['SF_Pro:Bold',sans-serif] font-bold leading-[22px] relative shrink-0 text-[#f3f3f4] text-[12px] text-center text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+        Salir
+      </p>
+    </div>
+  );
+}
+
+function Play() {
+  return (
+    <div className="mb-[-2px] relative shrink-0 size-[24px]" data-name="Play">
+      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
+        <g id="Play">
+          <path d="M5 3L19 12L5 21V3Z" id="Icon" stroke="var(--stroke-0, #23252D)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+        </g>
+      </svg>
+    </div>
+  );
+}
+
+function Frame1() {
+  return (
+    <div className="absolute bg-[#f3f3f4] content-stretch flex flex-col items-center justify-center left-[289px] pb-[27px] pt-[25px] px-[25px] rounded-[30px] shadow-[0px_1px_17.9px_4px_rgba(0,0,0,0.15)] size-[75px] top-[23px]">
+      <Play />
+      <p className="font-['SF_Pro:Bold',sans-serif] font-bold leading-[22px] relative shrink-0 text-[#23252d] text-[12px] text-center text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+        Modo
+      </p>
+    </div>
+  );
+}
+
+function Easy() {
+  return (
+    <div className="h-[133.064px] relative shrink-0 w-[144.859px]" data-name="easy">
+      <div className="absolute inset-[2.76%_7.74%]">
+        <img alt="" className="block max-w-none size-full" height="125.716" src={imgEasy} width="122.421" />
+      </div>
+      <div className="absolute inset-[29.18%_31.82%_29.19%_32.06%]" data-name="Vector">
+        <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 53 56">
+          <path d={svgPaths.p88c6e00} fill="var(--fill-0, #50917D)" id="Vector" />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+function Frame3() {
+  return (
+    <div className="content-stretch flex items-center mb-[-24.951px] relative shrink-0">
+      {[...Array(2).keys()].map((_, i) => (
+        <Easy key={i} />
+      ))}
+    </div>
+  );
+}
+
+function Easy1() {
+  return (
+    <div className="h-[133.064px] relative shrink-0 w-[144.859px]" data-name="easy">
+      <div className="absolute inset-[2.76%_7.74%]">
+        <img alt="" className="block max-w-none size-full" height="125.716" src={imgEasy} width="122.421" />
+      </div>
+      <div className="absolute inset-[29.18%_31.82%_29.19%_32.06%]" data-name="Vector">
+        <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 53 56">
+          <path d={svgPaths.p88c6e00} fill="var(--fill-0, #50917D)" id="Vector" />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+function Frame2() {
+  return (
+    <div className="content-stretch flex items-center mb-[-24.951px] relative shrink-0">
+      <Easy1 />
+    </div>
+  );
+}
+
+function Frame4() {
+  return (
+    <div className="absolute content-stretch flex flex-col items-center left-[calc(50%-13px)] pb-[24.951px] pt-0 px-0 top-[234px] translate-x-[-50%] w-[279px]">
+      <Frame3 />
+      <Frame2 />
+      <Frame3 />
+      <Frame2 />
+      <Frame3 />
+    </div>
+  );
+}
+
+export default function Component() {
+  return (
+    <div className="bg-gradient-to-b from-[#1c101d] relative size-full to-[#4b294f]" data-name="3">
+      <Frame />
+      <Frame1 />
+      <p className="absolute font-['SF_Pro:Bold',sans-serif] font-bold leading-[22px] left-[67px] text-[#f3f3f4] text-[32px] text-center text-nowrap top-[158px] translate-x-[-50%] whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+        1:00
+      </p>
+      <p className="absolute font-['SF_Pro:Bold',sans-serif] font-bold leading-[22px] left-[322.5px] text-[#f3f3f4] text-[32px] text-center text-nowrap top-[158px] translate-x-[-50%] whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+        3400
+      </p>
+      <p className="absolute font-['SF_Pro:Bold',sans-serif] font-bold leading-[22px] left-[62px] text-[#b784c7] text-[14px] text-center text-nowrap top-[130px] translate-x-[-50%] whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+        TIEMPO
+      </p>
+      <p className="absolute font-['SF_Pro:Bold',sans-serif] font-bold leading-[22px] left-[333.5px] text-[#b784c7] text-[14px] text-center text-nowrap top-[130px] translate-x-[-50%] whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+        PUNTOS
+      </p>
+      <Frame4 />
+    </div>
+  );
+}
