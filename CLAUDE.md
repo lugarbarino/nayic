@@ -7,7 +7,8 @@ Leé esto primero. Resume todo lo decidido para no tener que re-explicar.
 - Ya no quiere depender de Figma: todo lo que se publique tiene que ser código editable en este repo.
 - Repo privado: https://github.com/lugarbarino/nayic (rama `main`). Local: `~/Documents/GitHub/nayic`.
 - No hay `gh` ni Homebrew en su Mac. El permiso de `git push` a veces lo bloquea el sistema: en ese caso dale el comando para pegar en la app Terminal.
-- Lucía sube cambios con **GitHub Desktop** (Commit to main + Push origin), a veces mientras el trabajo está a medias. Antes de empezar, mirá `git log`/`git status`; y avisale cuándo un cambio está completo y listo para subir (un commit a medias puede romper el build de Vercel).
+- **Claude hace el commit y el push** (Lucía lo pidió): cuando un trabajo está terminado y probado (build completo OK), commitear y pushear a `main` sin esperar. Nunca subir trabajo a medias (rompe el build de Vercel).
+- Lucía a veces también sube con **GitHub Desktop**, incluso con trabajo a medias. Antes de empezar, mirá `git log`/`git status`.
 
 ## Qué es
 Sitio de mini juegos en **nayic.com.ar**: una landing y 6 juegos, todos en este repo. Todo se publica junto en un único proyecto de Vercel (plan Hobby, cuenta personal).
