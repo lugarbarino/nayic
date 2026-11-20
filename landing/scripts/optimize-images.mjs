@@ -17,8 +17,9 @@ for (const file of readdirSync(src)) {
     // Fondo grande: dos tamaños para srcset
     await img.clone().resize({ width: 1200 }).webp({ quality: 72 }).toFile(join(out, 'hero-1200.webp'))
     await img.clone().resize({ width: 2000 }).webp({ quality: 72 }).toFile(join(out, 'hero-2000.webp'))
-    // Imagen para compartir en redes (1200x630)
-    await img.clone().resize(1200, 630, { fit: 'cover' }).jpeg({ quality: 82 }).toFile(join(out, 'og.jpg'))
+  } else if (name === 'og') {
+    // Imagen para compartir en redes (la original de Figma), en JPG liviano
+    await img.clone().resize({ width: 1200 }).flatten({ background: '#1d171f' }).jpeg({ quality: 84, mozjpeg: true }).toFile(join(out, 'og.jpg'))
   } else {
     // Tarjetas: se muestran a 350px, guardamos 700px para pantallas retina
     await img.clone().resize({ width: 700 }).webp({ quality: 80 }).toFile(join(out, `${name}.webp`))

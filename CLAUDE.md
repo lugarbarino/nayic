@@ -43,6 +43,11 @@ Sitio de mini juegos en **nayic.com.ar**: una landing y 6 juegos, todos en este 
 - Colores: fondo `#2b2031`, secciones `#1d171f`, lila `#d7c1e8`, texto tarjeta `#3b3b3b`, subtexto `#756f6c`, link `#332115`.
 - Tipografías: Capriola (títulos), Plus Jakarta Sans (texto), Giant Boss (la palabra "vos"; copiada del sitio original, confirmar que la licencia permita usarla).
 
+## Favicons e imágenes para compartir
+- Copiados de los sitios de Figma (nov 2026). Landing: `landing/public/favicon.png` y `landing/assets-src/og.png` (→ `public/img/og.jpg` con `npm run optimize`). Cada juego: `games/<juego>/public/favicon.png` y `public/og.jpg` (1200x630), más título, descripción y meta `og:` en su `index.html` (textos originales de Figma).
+- Los favicons son de 48x48 (lo que publica Figma). Falta un ícono grande (512x512) para `apple-touch-icon` / pantalla de inicio del celular.
+- Las `og:image` apuntan a `https://nayic.com.ar/...`: funcionan recién cuando el dominio apunte a Vercel.
+
 ## Juegos y Figma Make (cosas raras)
 - Los imports `figma:asset/<hash>.png` se resuelven con el plugin `games/_shared/figma-assets.js` (ya agregado a `vite.config.ts` de gato, memoria, tateti y tetris; viborita los tiene como alias).
 - **Imágenes faltantes**: el export de Figma Make no trajo 4 imágenes de Gato (pantalla de precarga) y 38 de Juego de memoria (pantalla de carga con hexágonos). El plugin las reemplaza por un píxel transparente y avisa en el build. Para recuperarlas hay que re-exportar esos juegos desde Figma Make (*Download code*) o conseguir las imágenes. Hasta entonces la pantalla de carga de memoria se ve incompleta.
