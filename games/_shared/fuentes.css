@@ -1,0 +1,60 @@
+/* Fuentes de los juegos de Nayic.
+   El código que exportó Figma Make pide las fuentes con nombres propios de Figma
+   ("Capriola:Regular", "SF Pro:Bold", …). En Figma Sites las cargaba Figma; acá las
+   definimos nosotros. El grosor y la cursiva los ponen las clases (font-bold, italic…).
+
+   - Capriola, Plus Jakarta Sans e Inter: fuentes libres (licencia SIL OFL), en ./fuentes
+   - SF Pro es la fuente de Apple y su licencia no permite publicarla en la web:
+     en su lugar usamos Inter, que es libre y muy parecida. */
+
+@font-face { font-family: 'Capriola'; src: url('./fuentes/capriola.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Capriola:Regular'; src: url('./fuentes/capriola.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+
+@font-face { font-family: 'Plus Jakarta Sans'; src: url('./fuentes/plus-jakarta-sans.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url('./fuentes/plus-jakarta-sans-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans:Medium'; src: url('./fuentes/plus-jakarta-sans.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans:Medium'; src: url('./fuentes/plus-jakarta-sans-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans:SemiBold'; src: url('./fuentes/plus-jakarta-sans.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans:SemiBold'; src: url('./fuentes/plus-jakarta-sans-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans:Bold'; src: url('./fuentes/plus-jakarta-sans.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans:Bold'; src: url('./fuentes/plus-jakarta-sans-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans:Regular'; src: url('./fuentes/plus-jakarta-sans.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans:Regular'; src: url('./fuentes/plus-jakarta-sans-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+
+@font-face { font-family: 'Inter'; src: url('./fuentes/inter.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('./fuentes/inter-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+
+@font-face { font-family: 'SF Pro'; src: url('./fuentes/inter.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SF Pro'; src: url('./fuentes/inter-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'SF Pro:Regular'; src: url('./fuentes/inter.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SF Pro:Regular'; src: url('./fuentes/inter-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'SF Pro:Medium'; src: url('./fuentes/inter.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SF Pro:Medium'; src: url('./fuentes/inter-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'SF Pro:Semibold'; src: url('./fuentes/inter.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SF Pro:Semibold'; src: url('./fuentes/inter-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'SF Pro:Bold'; src: url('./fuentes/inter.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SF Pro:Bold'; src: url('./fuentes/inter-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'SF Pro:Heavy'; src: url('./fuentes/inter.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SF Pro:Heavy'; src: url('./fuentes/inter-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'SF Pro:Black'; src: url('./fuentes/inter.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SF Pro:Black'; src: url('./fuentes/inter-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'SF Pro:Italic'; src: url('./fuentes/inter.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SF Pro:Italic'; src: url('./fuentes/inter-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'SF Pro:Regular Italic'; src: url('./fuentes/inter.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SF Pro:Regular Italic'; src: url('./fuentes/inter-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'SF Pro:Medium Italic'; src: url('./fuentes/inter.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SF Pro:Medium Italic'; src: url('./fuentes/inter-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'SF Pro:Bold Italic'; src: url('./fuentes/inter.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SF Pro:Bold Italic'; src: url('./fuentes/inter-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'SF Pro Display'; src: url('./fuentes/inter.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SF Pro Display'; src: url('./fuentes/inter-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'SF Pro Display:Regular'; src: url('./fuentes/inter.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SF Pro Display:Regular'; src: url('./fuentes/inter-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'SF Pro Display:Italic'; src: url('./fuentes/inter.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SF Pro Display:Italic'; src: url('./fuentes/inter-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'SF Pro Display:Semibold'; src: url('./fuentes/inter.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SF Pro Display:Semibold'; src: url('./fuentes/inter-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'SF Pro Display:Bold'; src: url('./fuentes/inter.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SF Pro Display:Bold'; src: url('./fuentes/inter-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'SF Compact Text:Medium'; src: url('./fuentes/inter.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SF Compact Text:Medium'; src: url('./fuentes/inter-italic.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }

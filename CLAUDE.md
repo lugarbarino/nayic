@@ -50,6 +50,11 @@ Sitio de mini juegos en **nayic.com.ar**: una landing y 6 juegos, todos en este 
 - Los favicons son de 48x48 (lo que publica Figma). Falta un ícono grande (512x512) para `apple-touch-icon` / pantalla de inicio del celular.
 - Las `og:image` apuntan a `https://nayic.com.ar/...`: funcionan recién cuando el dominio apunte a Vercel.
 
+## Fuentes de los juegos
+- El código de Figma Make pide fuentes con nombres de Figma (`font-['SF_Pro:Bold',sans-serif]`, `Capriola:Regular`, `Inter`…). Figma Sites las cargaba solo; el código exportado no trae ninguna, así que fuera de Figma se veían con la letra genérica del sistema.
+- Solución: `games/_shared/fuentes.css` + `games/_shared/fuentes/*.woff2` (Capriola, Plus Jakarta Sans, Inter; licencia SIL OFL, sacadas de los paquetes `@fontsource` instalados en la raíz). Cada juego lo importa al principio de su CSS (`@import '../../_shared/fuentes.css'`). Los juegos limpios tienen `server.fs.allow: ['..']` en `vite.config.ts` para que funcione en modo dev.
+- **SF Pro** (la más usada) es de Apple y su licencia no permite publicarla: se reemplaza por **Inter**. Con eso Gato quedó igual a Figma salvo diferencias de 1-2px en textos.
+
 ## Juegos y Figma Make (cosas raras)
 - Los imports `figma:asset/<hash>.png` se resuelven con el plugin `games/_shared/figma-assets.js` (ya agregado a `vite.config.ts` de gato, memoria, tateti y tetris; viborita los tiene como alias).
 - **Imágenes faltantes**: el export de Figma Make no trajo 4 imágenes de Gato (pantalla de precarga) y 38 de Juego de memoria (pantalla de carga con hexágonos). El plugin las reemplaza por un píxel transparente y avisa en el build. Para recuperarlas hay que re-exportar esos juegos desde Figma Make (*Download code*) o conseguir las imágenes. Hasta entonces la pantalla de carga de memoria se ve incompleta.
@@ -64,7 +69,9 @@ Sitio de mini juegos en **nayic.com.ar**: una landing y 6 juegos, todos en este 
 1c. Limpieza de los juegos: borrar lo que Figma agrega y no se usa (~75% de los archivos, los 48 componentes de `ui/`, la mayoría de `imports/`, casi todas las dependencias), renombrar imágenes con nombres legibles y pasarlas a WebP. Después: un solo proyecto para landing + juegos, carpeta `shared/` común y plantilla para juegos nuevos.
    - **Tateti: hecho** (ver `games/tateti/CLAUDE.md`). Es el modelo a seguir: `assets-src/` con originales PNG renombrados → `npm run optimize -- games/<juego>` (script en `scripts/optimize-images.mjs`, usa `sharp` instalado en la raíz) → `src/assets/*.webp`; código en `src/` (`App.tsx`, `components/`, `svg/`, `styles.css`), sin alias `@`, sin plugin `figma-assets`, `package.json` solo con lo que se usa. Verificación: "huella" de la página (textos, imágenes y posiciones) antes y después en 1440px y 390px, más jugar una partida.
    - **Tetris: hecho** (ver `games/tetris/CLAUDE.md`). 20 MB → 1,8 MB.
-   - Siguen: Gato, La Viborita, Memoria, CAOS.
+   - **Gato: hecho** (ver `games/gato/CLAUDE.md`). Estaba en blanco fuera de Figma (faltaba la altura); no le faltaban imágenes (el precargador apuntaba a versiones viejas). 47,7 MB → 4,5 MB.
+   - Siguen: La Viborita, Memoria, CAOS. **Memoria**: revisar si sus "38 imágenes faltantes" son también referencias viejas en un precargador antes de pedir un re-export.
+   - Referencia para comparar: el juego publicado en `*.figma.site` (mientras exista), porque la versión exportada puede tener errores que Figma tapaba.
    - **Herramientas** (en `scripts/`): `analizar-juego.mjs` (qué archivos, paquetes e imágenes se usan; los imports solo de tipos no aparecen, revisarlos a mano) y `reorganizar-juego.mjs` (mueve código e imágenes según un mapa viejo→nuevo y reescribe todos los imports). Para nombrar imágenes: armar una planilla numerada con `sharp` y mirarla.
    - Los exports de Figma traen cosas olvidadas: carteles de depuración, imports a archivos que no existen. Revisar al limpiar.
    - **Bug a revisar en Gato**: igual que Tateti, le falta `html, body, #root { height: 100% }`; en Tateti eso hacía que la pantalla de juego quedara cortada arriba. Tetris no lo tenía (probado).

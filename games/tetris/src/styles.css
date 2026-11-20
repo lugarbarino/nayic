@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import '../../_shared/fuentes.css';
 
 /* ===== Tema (variables y base que vienen del diseño original) ===== */
 :root {

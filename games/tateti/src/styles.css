@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import '../../_shared/fuentes.css';
 
 /* Base del juego (lo único que se usaba del tema de Figma Make) */
 @layer base {
