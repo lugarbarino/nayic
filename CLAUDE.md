@@ -65,13 +65,14 @@ Sitio de mini juegos en **nayic.com.ar**: una landing y 6 juegos, todos en este 
 ## Pendientes
 1. Optimizar el peso de los juegos (dist: memoria ~68 MB, viborita ~51 MB, gato ~46 MB, tetris ~20 MB): convertir sus PNG a WebP. La landing ya está optimizada.
 2. Revisar el responsive/uso en móvil de cada juego (solo se revisó la landing).
-1b. ~~Traer CAOS al repo~~ (hecho: `games/caos/`, probado en `/caos/`). Detalle pendiente: en pantallas bajas (≈600px de alto) los 3 botones de abajo tapan la bajada "para que cada dibujo sea una aventura distinta" (ya pasaba en la versión de Figma).
+1b. ~~Traer CAOS al repo~~ (hecho y limpio). Detalle pendiente en `games/caos/CLAUDE.md`.
 1c. Limpieza de los juegos: borrar lo que Figma agrega y no se usa (~75% de los archivos, los 48 componentes de `ui/`, la mayoría de `imports/`, casi todas las dependencias), renombrar imágenes con nombres legibles y pasarlas a WebP. Después: un solo proyecto para landing + juegos, carpeta `shared/` común y plantilla para juegos nuevos.
    - **Tateti: hecho** (ver `games/tateti/CLAUDE.md`). Es el modelo a seguir: `assets-src/` con originales PNG renombrados → `npm run optimize -- games/<juego>` (script en `scripts/optimize-images.mjs`, usa `sharp` instalado en la raíz) → `src/assets/*.webp`; código en `src/` (`App.tsx`, `components/`, `svg/`, `styles.css`), sin alias `@`, sin plugin `figma-assets`, `package.json` solo con lo que se usa. Verificación: "huella" de la página (textos, imágenes y posiciones) antes y después en 1440px y 390px, más jugar una partida.
    - **Tetris: hecho** (ver `games/tetris/CLAUDE.md`). 20 MB → 1,8 MB.
    - **Gato: hecho** (ver `games/gato/CLAUDE.md`). Estaba en blanco fuera de Figma (faltaba la altura); no le faltaban imágenes (el precargador apuntaba a versiones viejas). 47,7 MB → 4,5 MB.
    - **Memoria: hecho** (ver `games/memoria/CLAUDE.md`). Tampoco faltaban imágenes: la pantalla de carga apuntaba a versiones viejas de 40 cartas; ahora usa los mazos del juego. 71 MB → 6,2 MB.
-   - Siguen: La Viborita y CAOS. Ya no hace falta re-exportar nada de Figma.
+   - **CAOS: hecho** (ver `games/caos/CLAUDE.md`). 37 MB → 2,8 MB.
+   - Sigue: La Viborita. Ya no hace falta re-exportar nada de Figma.
    - Ojo al buscar "versiones correctas" de una imagen: usar solo los archivos que el juego usa de verdad, nunca los `imports/` viejos sin usar (ahí hay versiones desactualizadas con el mismo nombre).
    - El script de reorganizar falla (sin mover nada) si un archivo importa algo que no está en el mapa: suelen ser imports sin usar; borrarlos y volver a correr.
    - Referencia para comparar: el juego publicado en `*.figma.site` (mientras exista), porque la versión exportada puede tener errores que Figma tapaba.

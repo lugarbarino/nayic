@@ -1047,11 +1047,13 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
   }, []);
 
   // Game loop principal
-  useEffect(() => {
-    if (!gameStarted || gameOver) return;
-
-    gameLoopRef.current = setInterval(() => {
-      const currentSpeed = speed; // Capturar velocidad actual
+  // Un paso del juego. `f` = cuántos "cuadros de 60fps" pasaron desde el paso anterior
+  // (1 a 60fps, 2 a 30fps…), para que la velocidad sea la misma en cualquier aparato.
+  // Se guarda en una ref en cada render, así el bucle siempre usa los valores actuales
+  // sin tener que recrearse (antes se destruía y recreaba 60 veces por segundo).
+  const tickRef = useRef<(f: number) => void>(() => {});
+  tickRef.current = (f: number) => {
+      const currentSpeed = speed * f; // Distancia a mover en este paso
       
       // Mover fondo - incrementar continuamente para ver diferentes partes
       setBgPosition((prev) => prev + currentSpeed);
@@ -1070,7 +1072,7 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
         }
         
         // Actualizar posición (Y va de 0 a 100, donde 0 es abajo y 100 es arriba)
-        const newY = prevY - velocityRef.current;
+        const newY = prevY - velocityRef.current * f;
         
         // Limitar entre 0 y 100
         return Math.max(0, Math.min(100, newY));
@@ -1105,7 +1107,7 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
           .map((obs) => {
             if (isFloatingPhase) {
               // Después de 90 segundos: flotar verticalmente Y moverse horizontalmente
-              const floatSpeed = 0.15; // Velocidad de flotación vertical (% por frame)
+              const floatSpeed = 0.15 * f; // Velocidad de flotación vertical (% por cuadro de 60fps)
               const floatRange = 15; // Rango de flotación (% arriba/abajo desde initialY)
               
               let newY = obs.y + (obs.floatDirection * floatSpeed);
@@ -1258,8 +1260,8 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
         const updatedBubbles = prevBubbles
           .map((bubble) => ({
             ...bubble,
-            x: bubble.x - currentSpeed + bubble.velocityX,
-            y: bubble.y + bubble.velocityY,
+            x: bubble.x - currentSpeed + bubble.velocityX * f,
+            y: bubble.y + bubble.velocityY * f,
           }))
           .filter((bubble) => {
             // Eliminar burbujas fuera de pantalla o que hayan expirado (más de 3 segundos)
@@ -1271,19 +1273,33 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
       });
 
       // Incrementar puntuación
-      setScore((prev) => prev + 1);
+      setScore((prev) => prev + f);
 
       // Incrementar velocidad gradualmente
-      setSpeed((prev) => Math.min(prev + 0.002, 10));
+      setSpeed((prev) => Math.min(prev + 0.002 * f, 10));
 
-      // Incrementar tiempo de juego
-      setGameTime((prev) => prev + 0.016); // Aproximadamente 1/60 de segundo
-    }, 16); // ~60 FPS
+      // Incrementar tiempo de juego (en segundos)
+      setGameTime((prev) => prev + f / 60);
+  };
+
+  // Bucle sincronizado con la pantalla: se crea una sola vez por partida
+  useEffect(() => {
+    if (!gameStarted || gameOver) return;
+
+    let last = performance.now();
+    const loop = (now: number) => {
+      // Tope de 3 cuadros: si la pestaña estuvo oculta no "salta" de golpe
+      const f = Math.min((now - last) / (1000 / 60), 3);
+      last = now;
+      tickRef.current(f);
+      gameLoopRef.current = requestAnimationFrame(loop);
+    };
+    gameLoopRef.current = requestAnimationFrame(loop);
 
     return () => {
-      if (gameLoopRef.current) clearInterval(gameLoopRef.current);
+      if (gameLoopRef.current) cancelAnimationFrame(gameLoopRef.current);
     };
-  }, [gameStarted, gameOver, speed, isFloating, checkCollision, checkFloatingCollision, checkCeilingCollision, checkLifePowerUpCollision, checkCrystalPowerUpCollision, checkStarPowerUpCollision, checkBatCollision, lives, isInvulnerable, gameTime, starImmunity]);
+  }, [gameStarted, gameOver]);
 
   // Cargar obstáculos visibles desde los pre-generados basándose en la posición de la cámara
   useEffect(() => {
@@ -1382,12 +1398,15 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
   }, [cameraX, gameStarted, gameOver]);
 
   // Limpiar periódicamente los Sets de IDs cargados para evitar crecimiento infinito
+  // (lee la cámara desde una ref: si dependiera de cameraX se recrearía en cada cuadro y nunca se ejecutaría)
+  const cameraXRef = useRef(0);
+  cameraXRef.current = cameraX;
   useEffect(() => {
     if (!gameStarted || gameOver) return;
-    
+
     const cleanupInterval = setInterval(() => {
       const LEVEL_WIDTH = 33045;
-      const currentLoop = Math.floor(cameraX / LEVEL_WIDTH);
+      const currentLoop = Math.floor(cameraXRef.current / LEVEL_WIDTH);
       
       // Solo mantener IDs de los últimos 2 loops (el actual y el anterior)
       // Todos los loops más antiguos ya están fuera de pantalla
@@ -1423,9 +1442,9 @@ export default function InfiniteRunner({ onExit }: InfiniteRunnerProps) {
       });
       ceilingIdsToDelete.forEach(id => loadedCeilingIds.current.delete(id));
     }, 5000); // Limpiar cada 5 segundos
-    
+
     return () => clearInterval(cleanupInterval);
-  }, [cameraX, gameStarted, gameOver]);
+  }, [gameStarted, gameOver]);
 
   // Generar power-ups de vida después de 45 segundos
   useEffect(() => {
