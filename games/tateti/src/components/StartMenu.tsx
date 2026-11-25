@@ -32,15 +32,15 @@ export function StartMenu({ onStartGame }: StartMenuProps) {
 
   return (
     <div 
-      className="relative size-full min-h-dvh flex items-center justify-center p-4 md:p-4"
+      className="relative w-full min-h-dvh flex [align-items:safe_center] justify-center p-4 md:p-4"
       style={{ 
         backgroundImage: "linear-gradient(105.242deg, rgb(12, 14, 23) 0%, rgb(65, 76, 125) 115.08%)" 
       }}
     >
       {/* Mobile Layout - Flexbox centrado */}
-      <div className="md:hidden flex flex-col gap-4 items-center w-full max-w-[420px]">
+      <div className="md:hidden flex flex-col gap-[clamp(8px,1.8dvh,16px)] items-center w-full max-w-[420px]">
         {/* Logo */}
-        <div className="h-[141px] w-full max-w-[410px] px-2">
+        <div className="h-[clamp(84px,15dvh,141px)] w-full max-w-[410px] px-2">
           <img 
             alt="Tateti Logo" 
             className="w-full h-full object-contain" 
@@ -146,7 +146,7 @@ export function StartMenu({ onStartGame }: StartMenuProps) {
         {/* Botón iniciar juego */}
         <button
           onClick={handleStartGame}
-          className="bg-[#2c44b2] flex h-[86.025px] items-center justify-center rounded-[34.41px] w-full max-w-[310.838px] transition-all duration-200 transform hover:scale-105 hover:bg-[#3a52c7] shadow-[inset_0px_-15.098px_4.314px_0px_rgba(0,0,0,0.25)] mt-2"
+          className="bg-[#2c44b2] flex h-[clamp(64px,10dvh,86px)] items-center justify-center rounded-[30px] w-full max-w-[310.838px] transition-all duration-200 transform hover:scale-105 hover:bg-[#3a52c7] shadow-[inset_0px_-12px_4px_0px_rgba(0,0,0,0.25)] mt-1"
         >
           <p className="font-['SF_Pro',sans-serif] font-[510] leading-[35.557px] text-[#ededed] text-[27.528px] text-center" style={{ fontVariationSettings: "'wdth' 100" }}>
             Iniciar juego
@@ -154,7 +154,7 @@ export function StartMenu({ onStartGame }: StartMenuProps) {
         </button>
 
         {/* Footer */}
-        <div className="flex gap-[8.627px] items-center group mt-2 mb-4">
+        <div className="flex gap-[8.627px] items-center group mt-1 mb-2">
           <a 
             href="https://nayic.com.ar/" 
             target="_blank" 

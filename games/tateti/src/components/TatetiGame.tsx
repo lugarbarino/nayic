@@ -119,7 +119,7 @@ function CellComponent({
       onClick={() => onCellClick(index)}
       className={`
         bg-[#1a1e31] shrink-0 overflow-visible
-        ${isMobile ? 'rounded-[17.04px] w-[min(115px,29vw)] h-[min(144px,36vw)]' : 'rounded-[20px] size-[147px]'}
+        ${isMobile ? 'rounded-[17.04px] size-[min(112px,27vw,calc((100dvh-230px)/3))]' : 'rounded-[20px] size-[147px]'}
         transition-all duration-200
         relative flex items-center justify-center p-3
         ${isWinningCell ? 'ring-4 ring-green-500' : ''}
@@ -435,9 +435,9 @@ export function TatetiGame({ mode, onBackToMenu, player1Character, player2Charac
       style={{ backgroundImage: "linear-gradient(105.242deg, rgb(12, 14, 23) 0%, rgb(65, 76, 125) 115.08%)" }}
     >
       {/* MOBILE LAYOUT */}
-      <div className="md:hidden relative size-full flex flex-col items-center justify-center p-4">
+      <div className="md:hidden relative w-full min-h-dvh flex flex-col items-center justify-center gap-[clamp(16px,4dvh,40px)] px-4 py-6">
         {/* Header - Botón Salir y Turno de */}
-        <div className={`absolute top-[60px] left-0 right-0 flex items-center justify-between px-[27px] ${winner ? 'blur-sm' : ''}`}>
+        <div className={`w-full max-w-[380px] flex items-center justify-between px-[6px] ${winner ? 'blur-sm' : ''}`}>
           {/* Botón Salir: solo la flecha, grande para el dedo (48px) */}
           <button
             onClick={onBackToMenu}
@@ -457,7 +457,7 @@ export function TatetiGame({ mode, onBackToMenu, player1Character, player2Charac
             <p className="font-['SF_Pro',sans-serif] font-bold leading-[22px] text-[#e5e1e1] text-[14px]" style={{ fontVariationSettings: "'wdth' 100" }}>
               Turno de:
             </p>
-            <div className="h-[91px] w-[127.665px] overflow-visible flex items-center justify-center">
+            <div className="h-[clamp(56px,10dvh,80px)] w-[clamp(72px,13dvh,110px)] overflow-visible flex items-center justify-center">
               <img 
                 src={currentPlayerImage}
                 alt="Turno"
@@ -468,7 +468,7 @@ export function TatetiGame({ mode, onBackToMenu, player1Character, player2Charac
         </div>
 
         {/* Tablero */}
-        <div className={`gap-[13.632px] grid-cols-[repeat(3,_fit-content(100%))] grid-rows-[repeat(3,_fit-content(100%))] inline-grid mt-[40px] ${winner ? 'blur-sm' : ''}`}>
+        <div className={`gap-[13.632px] grid-cols-[repeat(3,_fit-content(100%))] grid-rows-[repeat(3,_fit-content(100%))] inline-grid ${winner ? 'blur-sm' : ''}`}>
           {board.map((cell, index) => {
             const isWinningCell = winningLine.includes(index);
             const cellIsValidMove = phase === 'moving' && selectedPiece !== null && cell === null && isValidMove(selectedPiece, index);

@@ -12,6 +12,7 @@ Se publica en `/tateti/`.
 - Se arregló que la pantalla de juego quedaba cortada arriba (faltaba `height: 100%` en `html, body, #root`; ver `src/styles.css`).
 
 - Celular: el "Salir" del juego es un botón de 48x48 solo con la flecha (antes medía 50x26).
+- Celular con la barra del navegador (alto visible ~664px): el menú se achica con `dvh`/`clamp` para entrar entero (antes el logo quedaba cortado arriba) y, si igual no entra, se puede bajar (`align-items: safe center`). En la partida, el encabezado (Salir + turno) va arriba del tablero en columna (antes flotaba encima) y las casillas son cuadradas y entran en el alto visible.
 
 ## Estructura
 ```
@@ -40,5 +41,4 @@ src/
 
 ## Pendientes / ideas
 - Los textos usan la fuente "SF Pro", que solo existe en Apple: en Windows/Android se ve otra. Conviene definir una fuente propia (por ejemplo Plus Jakarta Sans, como la landing).
-- En celular el tablero queda casi pegado a los bordes.
 - Los componentes son largos (TatetiGame ~650 líneas) y tienen la versión móvil y la de escritorio duplicadas: se pueden partir en piezas más chicas.
